@@ -1,0 +1,9 @@
+select nw.ulspeed,at.app_name,ss.network_type from app_traffic at,nwquality nw, signal_strength ss
+where at.user_lon = nw.gpslon
+and at.user_lat = nw.gpslat limit 10;
+
+SELECT nw.ulspeed, at.app_name, at.network_type
+FROM app_traffic at
+INNER JOIN nwquality nw ON at.user_lon = nw.gpslon AND at.user_lat = nw.gpslat
+LIMIT 10;
+
