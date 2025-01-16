@@ -136,7 +136,7 @@
         </el-sub-menu>
 
 
-        <el-menu-item index="8">
+        <el-menu-item index="/temp1">
             <el-icon><Menu /></el-icon>
             <span>用户管理</span>
         </el-menu-item>

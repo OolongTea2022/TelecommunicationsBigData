@@ -26,15 +26,11 @@ const routes = [
     //路由懒加载
     component: () => import("../views/PathBookView.vue"),
   },
-
-  
-
-
-  // {
-  //   path: "/UserList",
-  //   //路由懒加载
-  //   component: () => import("../views/UserList.vue"),
-  // },
+  {
+    path: "/temp1",
+    //路由懒加载
+    component: () => import("../views/temp1.vue"),
+  },
   // {
   //   path: "/Signup",
   //   //路由懒加载
