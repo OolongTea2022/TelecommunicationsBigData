@@ -1,0 +1,238 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bigdata.dao.PopularMobileMapper">
+
+    <select id="getPopularMobileTrafficDistribution"
+            resultType="com.bigdata.model.entity.PopularMobile.PopularMobileTrafficDistribution">
+        SELECT
+            user_lon,
+            user_lat,
+            <choose>
+                <when test="dto.trafficType != null and dto.trafficType == 'total' ">
+                    upload_traffic + download_traffic
+                </when>
+                <when test="dto.trafficType != null and dto.trafficType == 'upload' ">
+                    upload_traffic
+                </when>
+                <when test="dto.trafficType != null and dto.trafficType == 'download' ">
+                    download_traffic
+                </when>
+                <otherwise>
+                    upload_traffic + download_traffic
+                </otherwise>
+            </choose> AS heat
+        FROM
+            app_traffic
+        WHERE
+            allmobiletraffic = 'no' AND companymodel = #{dto.companyModel}
+        <if test="dto.companyModel != null">
+            AND companymodel = #{dto.companyModel}
+        </if>
+        <if test="dto.networkName != null">
+            AND network_name = #{dto.networkName}
+        </if>
+        <if test="dto.startTime != null and dto.endTime != null">
+            AND start_time &gt;= #{dto.startTime} AND end_time &lt;= #{dto.endTime}
+        </if>
+        LIMIT 10
+    </select>
+
+    <select id="getPopularMobileQualityRankRank" resultType="com.bigdata.model.entity.PopularMobile.PopularMobileQualityRank">
+        SELECT
+            SUM(<choose>
+        <when test = "dto.nwQuality != null and dto.nwQuality == 'ULSPEED' " >
+            ulspeed
+        </when>
+        <when test = "dto.nwQuality != null and dto.nwQuality == 'DLSPEED'" >
+            dlspeed
+        </when>
+        <when test = "dto.nwQuality != null and dto.nwQuality == 'LATENCY'" >
+            latency
+        </when>
+        <otherwise>
+            ulspeed
+        </otherwise>
+    </choose>
+
+        ) AS speed,
+            companymodel,
+            nwoperator
+        FROM
+            nwquality
+        WHERE
+            companymodel IS NOT NULL AND companymodel != 'NULL'
+            AND nwoperator IN ('CUCC','CTCC','CMCC')
+            <if test="dto.networkName != null">
+                AND nwoperator = #{dto.networkName}
+            </if>
+            <if test="dto.startTime != null and dto.endTime != null">
+                AND daytime BETWEEN #{dto.startTime} AND #{dto.endTime}
+            </if>
+        GROUP BY
+            companymodel,
+            nwoperator
+        ORDER BY
+            speed DESC
+            LIMIT 20
+    </select>
+
+
+    <select id="getPopularMobileTrafficRank"
+            resultType="com.bigdata.model.entity.PopularMobile.PopularMobileTrafficRank"
+            parameterType="com.bigdata.model.dto.PopularMobileTrafficRankDTO">
+
+        SELECT
+            SUM(<choose>
+                <when test = "dto.trafficType != null and dto.trafficType == 'upload' " >
+                    upload_traffic
+                </when>
+                <when test = "dto.trafficType != null and dto.trafficType == 'download' " >
+                    download_traffic
+                </when>
+                <when test = "dto.trafficType != null and dto.trafficType == 'total' " >
+                    upload_traffic + download_traffic
+                </when>
+                <otherwise>
+                    upload_traffic + download_traffic
+                </otherwise>
+            </choose>
+
+            ) AS speed,
+            companymodel,
+            network_type
+        FROM
+            app_traffic
+        WHERE
+            companymodel != 'NULL' AND network_type IS NOT NULL
+        <if test="dto.networkName != null">
+            AND network_name = #{dto.networkName}
+        </if>
+        <if test="dto.startTime != null and dto.endTime != null">
+            AND start_time &gt;= #{dto.startTime} AND end_time &lt;= #{dto.endTime}
+        </if>
+
+        GROUP BY
+            companymodel,
+            network_type
+        ORDER BY
+            speed DESC
+        LIMIT 15
+    </select>
+
+
+    <select id="getPopularMobileOSTrafficRank"
+            resultType="com.bigdata.model.entity.PopularMobile.PopularMobileOSTrafficRank"
+            parameterType="com.bigdata.model.dto.PopularMobileOSTrafficRankDTO">
+        SELECT
+            SUM(
+                <choose>
+                    <when test = "dto.trafficType != null and dto.trafficType == 'upload' " >
+                        upload_traffic
+                    </when>
+                    <when test = "dto.trafficType != null and dto.trafficType == 'download' " >
+                        download_traffic
+                    </when>
+                    <when test = "dto.trafficType != null and dto.trafficType == 'total' " >
+                        upload_traffic + download_traffic
+                    </when>
+                    <otherwise>
+                        upload_traffic + download_traffic
+                    </otherwise>
+                </choose>
+        ) AS speed,
+            network_type,
+            os_andversion
+        FROM
+            app_traffic
+        WHERE
+            network_type IS NOT NULL AND os_andversion != 'unknown'
+            <if test="dto.networkName != null">
+                AND network_name = #{dto.networkName}
+            </if>
+            <if test="dto.startTime != null and dto.endTime != null">
+                AND start_time &gt;= #{dto.startTime} AND end_time &lt;= #{dto.endTime}
+            </if>
+        GROUP BY
+            network_type,
+            os_andversion
+        ORDER BY
+            speed DESC
+        LIMIT 15
+    </select>
+
+
+    <select id="getPopularMobileDistribution"
+            resultType="com.bigdata.model.entity.PopularMobile.PopularMobileDistribution"
+            parameterType="com.bigdata.model.dto.PopularMobileDistributionDTO">
+        SELECT
+            SUM(
+                <choose>
+                    <when test = "dto.trafficType != null and dto.trafficType == 'upload' " >
+                        upload_traffic
+                    </when>
+                    <when test = "dto.trafficType != null and dto.trafficType == 'download' " >
+                        download_traffic
+                    </when>
+                    <when test = "dto.trafficType != null and dto.trafficType == 'total' " >
+                        upload_traffic + download_traffic
+                    </when>
+                    <otherwise>
+                        upload_traffic + download_traffic
+                    </otherwise>
+                </choose>
+            ) AS heat,
+            companymodel
+        FROM
+            app_traffic
+        WHERE
+            allmobiletraffic = 'no'
+            <if test="dto.networkName != null">
+                AND network_name = #{dto.networkName}
+            </if>
+            <if test="dto.startTime != null and dto.endTime != null">
+                AND start_time &gt;= #{dto.startTime} AND end_time &lt;= #{dto.endTime}
+            </if>
+        GROUP BY
+            companymodel
+        ORDER BY
+            heat DESC
+    </select>
+
+
+    <select id="getMobileOSDistribution" resultType="com.bigdata.model.entity.PopularMobile.MobileOSDistribution"
+            parameterType="com.bigdata.model.dto.MobileOSDistributionDTO">
+        SELECT
+            SUM(<choose>
+                <when test = "dto.trafficType != null and dto.trafficType == 'upload' " >
+                    upload_traffic
+                </when>
+                <when test = "dto.trafficType != null and dto.trafficType == 'download' " >
+                    download_traffic
+                </when>
+                <when test = "dto.trafficType != null and dto.trafficType == 'total' " >
+                    upload_traffic + download_traffic
+                </when>
+                <otherwise>
+                    upload_traffic + download_traffic
+                </otherwise>
+            </choose>) AS heat,
+            os,
+            os_version
+        FROM
+            app_traffic
+        WHERE
+            allmobiletraffic = 'no'
+            <if test="dto.networkName != null">
+                AND network_name = #{dto.networkName}
+            </if>
+            <if test="dto.startTime != null and dto.endTime != null">
+                AND start_time &gt;= #{dto.startTime} AND end_time &lt;= #{dto.endTime}
+            </if>
+        GROUP BY
+            os,
+            os_version
+        ORDER BY
+            heat DESC
+    </select>
+
+</mapper>
