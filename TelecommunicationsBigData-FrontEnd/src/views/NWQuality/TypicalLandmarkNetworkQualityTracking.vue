@@ -14,7 +14,7 @@
     </el-form-item>
     <el-form-item label="网络质量">
       <el-select
-        v-model="formInline.region"
+        v-model="formInline.network"
         placeholder=" "
         clearable
       >
@@ -24,7 +24,7 @@
     </el-form-item>
     <el-form-item label="地标">
       <el-select
-        v-model="formInline.region"
+        v-model="formInline.landmark"
         placeholder=" "
         clearable
       >
@@ -35,7 +35,7 @@
     </el-form-item>
     <el-form-item label="网络制式">
       <el-select
-        v-model="formInline.region"
+        v-model="formInline.zhishi"
         placeholder=" "
         clearable
       >
@@ -45,7 +45,7 @@
     </el-form-item>
     <el-form-item label="时间颗粒度">
       <el-select
-        v-model="formInline.region"
+        v-model="formInline.time"
         placeholder=" "
         clearable
       >

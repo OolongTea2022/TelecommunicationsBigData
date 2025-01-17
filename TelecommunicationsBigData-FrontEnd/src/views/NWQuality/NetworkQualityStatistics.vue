@@ -2,7 +2,7 @@
 <el-form :inline="true" :model="formInline" class="demo-form-inline">
     <el-form-item label="网络质量">
     <el-select
-        v-model="formInline.region"
+        v-model="formInline.network"
         placeholder=" "
         clearable
     >
