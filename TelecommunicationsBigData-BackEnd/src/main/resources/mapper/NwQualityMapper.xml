@@ -7,7 +7,20 @@
         SELECT
         NWOPERATOR,
         NWTYPE,
-        AVG(ULSPEED) AS SPEED
+        <choose>
+            <when test="speedType == 'ulspeed'">
+                AVG(ULSPEED) AS SPEED
+            </when>
+            <when test="speedType == 'dlspeed'">
+                AVG(DLSPEED) AS SPEED
+            </when>
+            <when test="speedType == 'latency'">
+                AVG(LATENCY) AS SPEED
+            </when>
+            <otherwise>
+                AVG(ULSPEED) AS SPEED
+            </otherwise>
+        </choose>
         FROM
             NWQUALITY
         <where>
@@ -56,8 +69,18 @@
     <select id="getTypicalTracking"
             resultType="com.bigdata.model.entity.NetworkQuality.TypicalNWQualityTracking">
         SELECT
-            SUBSTR(TO_CHAR(DAYTIME,'#'), 7, 2) AS x_rate,
             NWOPERATOR,
+        <choose>
+            <when test="timeGranularity == 'day' ">
+                TO_CHAR(DAYTIME,'#') AS x_rate,
+            </when>
+            <when test="timeGranularity == 'hour' ">
+                TO_CHAR(DAYTIME/100,'#') AS x_rate,
+            </when>
+            <otherwise>
+                TO_CHAR(DAYTIME/10000,'#') AS x_rate,
+            </otherwise>
+        </choose>
         <choose>
             <when test="speedType == 'ulspeed'">
                 AVG(ULSPEED) AS SPEED
@@ -83,7 +106,9 @@
         </where>
         GROUP BY
             NWOPERATOR,
-            SUBSTR(TO_CHAR(DAYTIME,'#'), 7, 2)
+            x_rate
+        ORDER BY
+            x_rate
     </select>
     <select id="getLandmarkStatistics"
             resultType="com.bigdata.model.entity.NetworkQuality.TypicalNWQualityStatistics">
