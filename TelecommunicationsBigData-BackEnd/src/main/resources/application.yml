@@ -1,16 +1,14 @@
 server:
-  port: 8082
-
+  port: 8081
+# spring.mvc.pathmatch.matching-strategy=ANT_PATH_MATCHER
 spring:
   mvc:
-    view:
-      prefix: /WEB-INF/jsp/
-      suffix: .jsp
+    pathmatch:
+      matching-strategy: ant_path_matcher
   datasource:
-
+    type: com.alibaba.druid.pool.DruidDataSource
     driver-class-name: org.apache.phoenix.jdbc.PhoenixDriver
     url: jdbc:phoenix:192.168.10.102,192.168.10.103,192.168.10.104:2181
-    type: org.springframework.jdbc.datasource.DriverManagerDataSource
 
 mybatis:
   typeAliasesPackage: com.bigdata.entity
