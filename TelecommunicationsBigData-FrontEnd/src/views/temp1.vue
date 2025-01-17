@@ -1,125 +1,89 @@
-<template lang="">
-    <div id="echarts2" style="background-color: #374C6B; height: 80%; width:80%;        margin:.1rem;"></div>
+<template>
+    <div>
+        <div id="container" ref="dom"></div>
+        <div id="main" style="height: 700px; width: 100%;"></div>
+    </div>
 </template>
 
 
-
 <script setup>
-import * as echarts from 'echarts';
-import { onMounted } from "vue";
 
+    import * as echarts from 'echarts';
+import 'echarts/extension/bmap/bmap';
+import { onMounted, ref } from 'vue';
 
-function showImg(){
-    const myChart = echarts.init(document.getElementById('echarts2'));
-    const option = {
-        title: {
-            text: 'Stacked Area Chart'
-        },
-        tooltip: {
-            trigger: 'axis',
-            axisPointer: {
-            type: 'cross',
-            label: {
-                backgroundColor: '#6a7985'
-            }
-            }
-        },
-        legend: {
-            data: ['Email', 'Union Ads', 'Video Ads', 'Direct', 'Search Engine']
-        },
-        toolbox: {
-            feature: {
-            saveAsImage: {}
-            }
-        },
-        grid: {
-            left: '3%',
-            right: '4%',
-            bottom: '3%',
-            containLabel: true
-        },
-        xAxis: [
-            {
-            type: 'category',
-            boundaryGap: false,
-            data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
-            }
-        ],
-        yAxis: [
-            {
-            type: 'value'
-            }
-        ],
-        series: [
-            {
-            name: 'Email',
-            type: 'line',
-            stack: 'Total',
-            areaStyle: {},
-            emphasis: {
-                focus: 'series'
-            },
-            data: [120, 132, 101, 134, 90, 230, 210]
-            },
-            {
-            name: 'Union Ads',
-            type: 'line',
-            stack: 'Total',
-            areaStyle: {},
-            emphasis: {
-                focus: 'series'
-            },
-            data: [220, 182, 191, 234, 290, 330, 310]
-            },
-            {
-            name: 'Video Ads',
-            type: 'line',
-            stack: 'Total',
-            areaStyle: {},
-            emphasis: {
-                focus: 'series'
-            },
-            data: [150, 232, 201, 154, 190, 330, 410]
-            },
-            {
-            name: 'Direct',
-            type: 'line',
-            stack: 'Total',
-            areaStyle: {},
-            emphasis: {
-                focus: 'series'
-            },
-            data: [320, 332, 301, 334, 390, 330, 320]
-            },
-            {
-            name: 'Search Engine',
-            type: 'line',
-            stack: 'Total',
-            label: {
-                show: true,
-                position: 'top'
-            },
-            areaStyle: {},
-            emphasis: {
-                focus: 'series'
-            },
-            data: [820, 932, 901, 934, 1290, 1330, 1320]
-            }
-        ]
-    };
+    const dom = ref();
+    let map;
+    let myChart;
 
-    myChart.setOption(option);
-}
+    onMounted(() => {
+        map = new window.BMapGL.Map(dom.value);
+        var point = new window.BMapGL.Point(116.404, 39.915);
+        map.centerAndZoom(point, 15);
+        map.enableScrollWheelZoom(true);
+        
+        var chartDom = document.getElementById('main');
+        myChart = echarts.init(chartDom);
+        
+        var option;
+        fetch('https://echarts.apache.org/examples/data/asset/data/hangzhou-tracks.json')
+            .then(response => response.json())
+            .then(data => {
+                var points = [].concat.apply(
+                    [],
+                    data.map(function (track) {
+                        return track.map(function (seg) {
+                            return seg.coord.concat([1]);
+                        });
+                    })
+                );
+                myChart.setOption(
+                    (option = {
+                        animation: false,
+                        bmap: {
+                            center: [116.404, 39.915],
+                            zoom: 15,
+                            roam: true
+                        },
+                        visualMap: {
+                            show: false,
+                            top: 'top',
+                            min: 0,
+                            max: 5,
+                            seriesIndex: 0,
+                            calculable: true,
+                            inRange: {
+                                color: ['blue', 'blue', 'green', 'yellow', 'red']
+                            }
+                        },
+                        series: [
+                            {
+                                type: 'heatmap',
+                                coordinateSystem: 'bmap',
+                                data: points,
+                                pointSize: 5,
+                                blurSize: 6
+                            }
+                        ]
+                    })
+                );
+                var bmap = myChart.getModel().getComponent('bmap').getBMap();
+                bmap.addControl(new BMap.MapTypeControl());
+            })
+            .catch(error => console.error('Error fetching data:', error));
 
-
-onMounted(()=>{
-showImg();
-})
-
-
+        option && myChart.setOption(option);
+    })
 
 </script>
 
-<style lang="">
+
+
+
+<style>
     
+#container {
+    height: 700px;
+    width: 100%;
+}
 </style>
