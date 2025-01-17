@@ -71,10 +71,10 @@
         SELECT
             NWOPERATOR,
         <choose>
-            <when test="timeGranularity == 'day' ">
+            <when test="timeGranularity == 'hour' ">
                 TO_CHAR(DAYTIME,'#') AS x_rate,
             </when>
-            <when test="timeGranularity == 'hour' ">
+            <when test="timeGranularity == 'day' ">
                 TO_CHAR(DAYTIME/100,'#') AS x_rate,
             </when>
             <otherwise>
