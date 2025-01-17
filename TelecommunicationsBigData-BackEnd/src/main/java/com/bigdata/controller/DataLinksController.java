@@ -1,37 +1,40 @@
 package com.bigdata.controller;
 
-import com.bigdata.model.entity.DataLinks.DataLinksDistribution;
-import com.bigdata.model.entity.DataLinks.DataLinkStatistics;
+import com.bigdata.VO.DataLinks.DistributionVo;
+import com.bigdata.VO.DataLinks.StatisticsVo;
+import com.bigdata.dto.DataLinks.DistributionDTO;
+import com.bigdata.dto.DataLinks.StatisticsDTO;
+import com.bigdata.result.Result;
 import com.bigdata.service.DataLinksService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("/dataLinks")
+@RequestMapping("/datalinks")
+@Slf4j
 public class DataLinksController {
 
     @Autowired
     private DataLinksService dataLinksService;
 
-    @GetMapping("/getDataLinksDistribution")
-    @ResponseBody
-    public List<DataLinksDistribution> getDataLinksDistribution(
-            @RequestParam(required = false) String networkType,
-            @RequestParam(required = false) String networkName,
-            @RequestParam(required = false) String userLat,
-            @RequestParam(required = false) String userLon,
-            @RequestParam(required = false) String mobileNetworkType) {
-        return dataLinksService.getDataLinksDistribution(networkType, networkName, userLat, userLon, mobileNetworkType);
+    //11
+    @PostMapping("/Distribution")
+    public Result<List<DistributionVo>> getDistribution(@RequestBody DistributionDTO distributionDTO) {
+        log.info("getdatalinksDistribution");
+        return Result.success(dataLinksService.getDataLinksDistribution(distributionDTO));
     }
 
-    @GetMapping("/getDataLinkStatistics")
-    @ResponseBody
-    public List<DataLinkStatistics> getDataLinkStatistics(
-            @RequestParam(required = false) String networkName,
-            @RequestParam(required = false) String networkType,
-            @RequestParam(required = false) Long tcount) {
-        return dataLinksService.getDataLinkStatistics(networkType, networkName, tcount);
+    @PostMapping("/statistics")
+    public Result<List<StatisticsVo>> getStatistics(@RequestBody StatisticsDTO statisticsDTO) {
+        log.info("getstatistics");
+        return Result.success(dataLinksService.getDataLinkStatistics(statisticsDTO));
     }
+
+
 }

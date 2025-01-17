@@ -1,9 +1,9 @@
-package com.bigdata.model.entity.DataLinks;
+package com.bigdata.VO.DataLinks;
 
 import lombok.Data;
 
 @Data
-public class DataLinksDistribution {
+public class DistributionVo {
     private double userLat;
     private double userLon;
     private String networkName;

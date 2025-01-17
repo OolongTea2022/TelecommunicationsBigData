@@ -6,21 +6,10 @@
         SELECT USER_LAT, USER_LON, NETWORK_NAME, MOBILE_NETWORK_TYPE
         FROM DATACONNECTION
         <where>
-            <if test="networkType!= null and networkType!= ''">
-                NETWORK_TYPE = #{networkType}
-            </if>
-            <if test="networkName!= null and networkName!= ''">
-                AND NETWORK_NAME = #{networkName}
-            </if>
-            <if test="userLat!= null and userLat!= ''">
-                AND USER_LAT = #{userLat}
-            </if>
-            <if test="userLon!= null and userLon!= ''">
-                AND USER_LON = #{userLon}
-            </if>
-            <if test="mobileNetworkType!= null and mobileNetworkType!= ''">
-                AND MOBILE_NETWORK_TYPE = #{mobileNetworkType}
-            </if>
+            <if test="userLat != 0">AND USER_LAT = #{userLat}</if>
+            <if test="userLon != 0">AND USER_LON = #{userLon} </if>
+            <if test="networkName != null">AND NETWORK_NAME = #{networkName} </if>
+            <if test="mobileNetworkType != null">AND MOBILE_NETWORK_TYPE =  #{mobileNetworkType}</if>
         </where>
         LIMIT 10
     </select>
@@ -29,15 +18,8 @@
         SELECT COUNT(*) AS TCOUNT, NETWORK_NAME, NETWORK_TYPE
         FROM DATACONNECTION
         <where>
-            <if test="networkType!= null and networkType!= ''">
-                AND NETWORK_TYPE = #{networkType}
-            </if>
-            <if test="networkName!= null and networkName!= ''">
-                AND NETWORK_NAME = #{networkName}
-            </if>
-            <if test="tcount!= null">
-                AND COUNT(*) = #{tcount}
-            </if>
+            <if test="networkName != null">AND NETWORK_NAME =  #{networkName}</if>
+            <if test="networkType != null">AND NETWORK_TYPE =  #{networkType}</if>
         </where>
         GROUP BY NETWORK_NAME, NETWORK_TYPE
         LIMIT 10
