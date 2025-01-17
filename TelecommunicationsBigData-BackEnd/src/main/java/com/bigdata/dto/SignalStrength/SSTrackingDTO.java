@@ -10,4 +10,5 @@ public class SSTrackingDTO {
     private String networkType;
     private long startDate;
     private long endDate;
+    private String timeGranularity;
 }

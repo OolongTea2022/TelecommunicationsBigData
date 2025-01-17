@@ -2,6 +2,7 @@ package com.bigdata.controller;
 
 import com.bigdata.VO.SignalCoverage.TypicalSSStatisticsVo;
 import com.bigdata.VO.SignalCoverage.TypicalSSTrackingVo;
+import com.bigdata.dto.SignalStrength.SSDistribution;
 import com.bigdata.dto.SignalStrength.SSStatisticsDTO;
 import com.bigdata.dto.SignalStrength.SSTrackingDTO;
 import com.bigdata.result.Result;
@@ -21,12 +22,14 @@ public class SignalStrengthDistributionController {
     @Autowired
     private SignalStrengthService signalStrengthService;
 
-    @GetMapping("/Distribution")
-    public Result<List<SignalStrengthDistributionVo>> getDistribution() {
+    //需求7
+    @PostMapping("/Distribution")
+    public Result<List<SignalStrengthDistributionVo>> getDistribution(@RequestBody SSDistribution distribution) {
         log.info("getDistribution");
-        return Result.success(signalStrengthService.getSignalStrengthDistribution());
+        return Result.success(signalStrengthService.getSignalStrengthDistribution(distribution));
     }
 
+    //8
     @PostMapping("/TypicalSignalStrengthTracking")
     public Result<List<TypicalSSTrackingVo>> getTypicalSignalStrengthTracking(@RequestBody SSTrackingDTO ssTrackingDTO) {
         log.info("getTypicalSignalStrengthTracking");
@@ -34,6 +37,7 @@ public class SignalStrengthDistributionController {
         return Result.success(signalStrengthService.getTypicalSignalStrengthTracking(ssTrackingDTO));
     }
 
+    //9
     @PostMapping("/TypicalSignalStrengthStatistics")
     public Result<List<TypicalSSStatisticsVo>> getTypicalSignalStrengthTrackingByLandmark(@RequestBody SSStatisticsDTO statisticsDTO) {
         log.info("getTypicalSignalStrengthTrackingByLandmark");

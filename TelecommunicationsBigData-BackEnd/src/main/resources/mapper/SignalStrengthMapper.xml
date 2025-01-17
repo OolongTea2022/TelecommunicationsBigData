@@ -2,36 +2,74 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 
 <mapper namespace="com.bigdata.dao.SignalStrengthMapper">
+
     <select id="getDistribution" resultType="com.bigdata.model.entity.SignalCoverage.SignalStrengthDistribution">
         SELECT
             RSSI,user_lon,user_lat,network_type
         FROM
             Signal_Strength
-        WHERE
-            LANDMARK = 'commercial'
-          AND RSSI BETWEEN -120 AND 0
-    </select>
-
-    <select id="getTracking" resultType="com.bigdata.model.entity.SignalCoverage.TypicalSignalStrengthTracking">
-        SELECT
-            SUBSTR(TO_CHAR(time_index,'#'), 7, 2) AS x_rate,
-            NETWORK_NAME,
-            AVG(RSSI) AS rssi
-        FROM
-            Signal_Strength
-
-        <where >
-            <if test = "landmark != null">AND LANDMARK = #{landmark}</if>
-            <if test = "networkType != null">AND NETWORK_TYPE = #{networkType}</if>
+        <where>
+            <choose>
+                <when test="nwOperator == 'ALL'">
+                    AND NWOPERATOR  IN ('CMCC', 'CUCC', 'CTCC')
+                </when>
+                <otherwise>
+                    <if test="nwOperator != null">AND NWOPERATOR = #{nwOperator}</if>
+                </otherwise>
+            </choose>
+            <choose>
+                <when test="nwType == 'ALL'">
+                    AND NWTYPE IN ('2G', '3G', '4G')
+                </when>
+                <otherwise>
+                    <if test="nwType != null"> AND NWTYPE = #{nwType}</if>
+                </otherwise>
+            </choose>
             <if test = "startDate != 0">AND TIME_INDEX &gt; #{startDate} </if>
             <if test = "endDate != 0">AND TIME_INDEX &lt; #{endDate}</if>
         </where>
 
-        GROUP BY
-        SUBSTR(TO_CHAR(time_index,'#'), 7, 2),
-        NETWORK_NAME
+        limit 10
 
     </select>
+
+    <select id="getTracking" resultType="com.bigdata.model.entity.SignalCoverage.TypicalSignalStrengthTracking">
+        SELECT
+            <choose>
+                <when test="timeGranularity == 'day' ">
+                    TO_CHAR(time_index,'#') AS x_rate,
+                </when>
+                <when test="timeGranularity == 'hour' ">
+                    TO_CHAR(time_index/100,'#') AS x_rate,
+                </when>
+                <otherwise>
+                    TO_CHAR(time_index/10000,'#') AS x_rate,
+                </otherwise>
+            </choose>
+            NETWORK_NAME,
+            AVG(RSSI) AS rssi
+        FROM
+            Signal_Strength
+        <where >
+            <if test = "landmark != null">AND LANDMARK = #{landmark}</if>
+            <choose>
+                <when test="networkType == 'ALL'">
+                    NETWORK_TYPE IN ('2G', '3G', '4G')
+                </when>
+                <otherwise>
+                    <if test="networkType != null">NETWORK_TYPE = #{networkType}</if>
+                </otherwise>
+            </choose>
+            <if test = "startDate != 0">AND TIME_INDEX &gt; #{startDate} </if>
+            <if test = "endDate != 0">AND TIME_INDEX &lt; #{endDate}</if>
+        </where>
+        GROUP BY
+            NETWORK_NAME,
+            x_rate
+        ORDER BY
+            x_rate
+    </select>
+
     <select id="getStatistics"
             resultType="com.bigdata.model.entity.SignalCoverage.TypicalSignalStrengthStatistics">
         SELECT
@@ -46,7 +84,6 @@
             <if test="endDate != null and endDate != 0">AND TIME_INDEX &lt; #{endDate}</if>
             <if test="networkName != null">AND NETWORK_NAME = #{networkName}</if>
         </where>
-
         GROUP BY
             LANDMARK, NETWORK_NAME,NETWORK_TYPE
         ORDER BY

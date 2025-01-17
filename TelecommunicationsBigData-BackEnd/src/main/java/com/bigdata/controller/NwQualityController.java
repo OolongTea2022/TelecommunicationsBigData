@@ -2,7 +2,9 @@ package com.bigdata.controller;
 
 import com.bigdata.VO.NetworkQuality.NwQualityStatisticsVo;
 import com.bigdata.VO.NetworkQuality.NwSpeedRankVo;
+import com.bigdata.VO.NetworkQuality.TypicalNWQualityStatisticsVo;
 import com.bigdata.VO.NetworkQuality.TypicalNWQualityTrackingVo;
+import com.bigdata.dto.nwQuality.LandmarkQualityStatisticsDTO;
 import com.bigdata.dto.nwQuality.NwTrackingDTO;
 import com.bigdata.dto.nwQuality.QualityStatisticsDTO;
 import com.bigdata.dto.nwQuality.SpeedRankDTO;
@@ -44,4 +46,9 @@ public class NwQualityController {
         return Result.success(nwQualityService.getTypicalTracking(trackingDTO));
     }
 
+    @PostMapping("/TypicalStatistics")
+    public Result<List<TypicalNWQualityStatisticsVo>> getTypicalStatistics(@RequestBody LandmarkQualityStatisticsDTO statisticsDTO) {
+        log.info("getTypicalStatistics");
+        return Result.success(nwQualityService.getLandmarkStatistics(statisticsDTO));
+    }
 }

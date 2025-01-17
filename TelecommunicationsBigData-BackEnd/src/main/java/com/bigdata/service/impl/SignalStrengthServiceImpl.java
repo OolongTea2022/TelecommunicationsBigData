@@ -4,6 +4,7 @@ import com.bigdata.VO.SignalCoverage.SignalStrengthDistributionVo;
 import com.bigdata.VO.SignalCoverage.TypicalSSTrackingVo;
 import com.bigdata.VO.SignalCoverage.TypicalSSStatisticsVo;
 import com.bigdata.dao.SignalStrengthMapper;
+import com.bigdata.dto.SignalStrength.SSDistribution;
 import com.bigdata.dto.SignalStrength.SSStatisticsDTO;
 import com.bigdata.dto.SignalStrength.SSTrackingDTO;
 import com.bigdata.model.entity.SignalCoverage.SignalStrengthDistribution;
@@ -25,9 +26,9 @@ public class SignalStrengthServiceImpl implements SignalStrengthService {
     private SignalStrengthMapper signalStrengthMapper;
 
     @Override
-    public List<SignalStrengthDistributionVo> getSignalStrengthDistribution() {
+    public List<SignalStrengthDistributionVo> getSignalStrengthDistribution(SSDistribution distribution) {
 
-        List<SignalStrengthDistribution> appDistribution = signalStrengthMapper.getDistribution();
+        List<SignalStrengthDistribution> appDistribution = signalStrengthMapper.getDistribution(distribution);
         log.info(String.valueOf(appDistribution.size()));
         List<SignalStrengthDistributionVo> result = appDistribution.parallelStream()
                 .map(item -> {

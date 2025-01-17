@@ -2,13 +2,16 @@ package com.bigdata.service.impl;
 
 import com.bigdata.VO.NetworkQuality.NwQualityStatisticsVo;
 import com.bigdata.VO.NetworkQuality.NwSpeedRankVo;
+import com.bigdata.VO.NetworkQuality.TypicalNWQualityStatisticsVo;
 import com.bigdata.VO.NetworkQuality.TypicalNWQualityTrackingVo;
 import com.bigdata.dao.NwQualityMapper;
+import com.bigdata.dto.nwQuality.LandmarkQualityStatisticsDTO;
 import com.bigdata.dto.nwQuality.NwTrackingDTO;
 import com.bigdata.dto.nwQuality.QualityStatisticsDTO;
 import com.bigdata.dto.nwQuality.SpeedRankDTO;
 import com.bigdata.model.entity.NetworkQuality.NwQualityStatistics;
 import com.bigdata.model.entity.NetworkQuality.NwSpeedRank;
+import com.bigdata.model.entity.NetworkQuality.TypicalNWQualityStatistics;
 import com.bigdata.model.entity.NetworkQuality.TypicalNWQualityTracking;
 import com.bigdata.service.NwQualityService;
 import org.springframework.beans.BeanUtils;
@@ -53,6 +56,24 @@ public class NwQualityServiceImpl implements NwQualityService {
     @Override
     public List<TypicalNWQualityTrackingVo> getTypicalTracking(NwTrackingDTO trackingDTO) {
         List<TypicalNWQualityTracking> trackings = nwQualityMapper.getTypicalTracking(trackingDTO);
-        return Collections.emptyList();
+        List<TypicalNWQualityTrackingVo> result = trackings.parallelStream()
+                .map(item -> {
+                    TypicalNWQualityTrackingVo vo = new TypicalNWQualityTrackingVo();
+                    BeanUtils.copyProperties(item, vo);
+                    return vo;
+                }).collect(Collectors.toList());
+        return result;
+    }
+
+    @Override
+    public List<TypicalNWQualityStatisticsVo> getLandmarkStatistics(LandmarkQualityStatisticsDTO statisticsDTO) {
+        List<TypicalNWQualityStatistics> Statistics = nwQualityMapper.getLandmarkStatistics(statisticsDTO);
+        List<TypicalNWQualityStatisticsVo> result = Statistics.parallelStream()
+                .map(item -> {
+                    TypicalNWQualityStatisticsVo vo = new TypicalNWQualityStatisticsVo();
+                    BeanUtils.copyProperties(item, vo);
+                    return vo;
+                }).collect(Collectors.toList());
+        return result;
     }
 }

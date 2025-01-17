@@ -3,12 +3,10 @@ package com.bigdata.dto.nwQuality;
 import lombok.Data;
 
 @Data
-public class NwTrackingDTO {
-    private String nwOperator;
+public class LandmarkQualityStatisticsDTO {
+    private String speedType;
     private String nwType;
-    private String landmark;
+    private String nwOperator;
     private long startDate;
     private long endDate;
-    private String speedType;
-
 }

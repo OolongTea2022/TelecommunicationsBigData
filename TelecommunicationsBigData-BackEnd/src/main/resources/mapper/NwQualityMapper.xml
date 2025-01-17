@@ -26,7 +26,20 @@
         SELECT
             PROVINCE,
             NWOPERATOR,
-            AVG(DLSPEED) AS SPEED
+        <choose>
+            <when test="speedType == 'ulspeed'">
+                AVG(ULSPEED) AS SPEED
+            </when>
+            <when test="speedType == 'dlspeed'">
+                AVG(DLSPEED) AS SPEED
+            </when>
+            <when test="speedType == 'latency'">
+                AVG(LATENCY) AS SPEED
+            </when>
+            <otherwise>
+                AVG(ULSPEED) AS SPEED
+            </otherwise>
+        </choose>
         FROM
             NWQUALITY
         <where>
@@ -43,18 +56,67 @@
     <select id="getTypicalTracking"
             resultType="com.bigdata.model.entity.NetworkQuality.TypicalNWQualityTracking">
         SELECT
-            SUBSTR(TO_CHAR(time_index,'#'), 7, 2) AS x_rate,
-            AVG(DLSPEED) AS SPEED,
+            SUBSTR(TO_CHAR(DAYTIME,'#'), 7, 2) AS x_rate,
             NWOPERATOR,
+        <choose>
+            <when test="speedType == 'ulspeed'">
+                AVG(ULSPEED) AS SPEED
+            </when>
+            <when test="speedType == 'dlspeed'">
+                AVG(DLSPEED) AS SPEED
+            </when>
+            <when test="speedType == 'latency'">
+                AVG(LATENCY) AS SPEED
+            </when>
+            <otherwise>
+                AVG(ULSPEED) AS SPEED
+            </otherwise>
+        </choose>
         FROM
             NWQUALITY
         <where>
-            <if test="nwOperator != null AND nwOperator != ALL">AND NWOPERATOR = #{nwOperator}</if>
+            <if test="nwOperator != null ">AND NWOPERATOR = #{nwOperator}</if>
             <if test="nwType != null">AND NWTYPE = #{nwType}</if>
             <if test="landmark != null">AND LANDMARK = #{landmark}</if>
             <if test="startDate != null and startDate != 0">AND DAYTIME &gt; #{startDate} </if>
             <if test="endDate != null and endDate != 0">AND DAYTIME &lt; #{endDate}</if>
         </where>
-
+        GROUP BY
+            NWOPERATOR,
+            SUBSTR(TO_CHAR(DAYTIME,'#'), 7, 2)
+    </select>
+    <select id="getLandmarkStatistics"
+            resultType="com.bigdata.model.entity.NetworkQuality.TypicalNWQualityStatistics">
+        SELECT
+            NWOPERATOR,
+            LANDMARK,
+        <choose>
+            <when test="speedType == 'ulspeed'">
+                AVG(ULSPEED) AS SPEED
+            </when>
+            <when test="speedType == 'dlspeed'">
+                AVG(DLSPEED) AS SPEED
+            </when>
+            <when test="speedType == 'latency'">
+                AVG(LATENCY) AS SPEED
+            </when>
+            <otherwise>
+                AVG(ULSPEED) AS SPEED
+            </otherwise>
+        </choose>
+        FROM
+            NWQUALITY
+        <where>
+            <if test="nwOperator != null ">AND NWOPERATOR = #{nwOperator}</if>
+            <if test="nwType != null">AND NWTYPE = #{nwType}</if>
+            <if test="startDate != null and startDate != 0">AND DAYTIME &gt; #{startDate} </if>
+            <if test="endDate != null and endDate != 0">AND DAYTIME &lt; #{endDate}</if>
+        </where>
+        GROUP BY
+            NWOPERATOR,
+            LANDMARK
+        ORDER BY
+            NWOPERATOR ASC,
+            LANDMARK ASC
     </select>
 </mapper>
