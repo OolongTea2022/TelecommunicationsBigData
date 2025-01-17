@@ -10,5 +10,6 @@ public class NwTrackingDTO {
     private long startDate;
     private long endDate;
     private String speedType;
+    private String timeGranularity;
 
 }

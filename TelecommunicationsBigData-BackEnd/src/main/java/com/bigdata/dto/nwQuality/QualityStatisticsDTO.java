@@ -8,4 +8,5 @@ public class QualityStatisticsDTO {
     private String nwOperator;
     private long startDate;
     private long endDate;
+    private String speedType;
 }
