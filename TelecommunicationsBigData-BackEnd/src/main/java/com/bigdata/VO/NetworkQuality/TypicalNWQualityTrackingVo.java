@@ -1,11 +1,10 @@
-package com.bigdata.model.entity.NetworkQuality;
+package com.bigdata.VO.NetworkQuality;
 
 import lombok.Data;
 
 @Data
-public class TypicalNWQualityTracking {
+public class TypicalNWQualityTrackingVo {
     private double speed;
     private String xRate;
     private String nwOperator;
-
 }

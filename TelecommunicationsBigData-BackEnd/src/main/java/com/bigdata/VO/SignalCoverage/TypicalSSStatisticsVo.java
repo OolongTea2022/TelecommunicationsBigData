@@ -1,9 +1,9 @@
-package com.bigdata.model.entity.SignalCoverage;
+package com.bigdata.VO.SignalCoverage;
 
 import lombok.Data;
 
 @Data
-public class TypicalSignalStrengthStatistics {
+public class TypicalSSStatisticsVo {
     private double rssi;
     private String landmark;
     private String networkType;

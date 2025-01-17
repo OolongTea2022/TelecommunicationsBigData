@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="com.bigdata.dao.SignalStrengthMapper">
+    <select id="getDistribution" resultType="com.bigdata.model.entity.SignalCoverage.SignalStrengthDistribution">
+        SELECT
+            RSSI,user_lon,user_lat,network_type
+        FROM
+            Signal_Strength
+        WHERE
+            LANDMARK = 'commercial'
+          AND RSSI BETWEEN -120 AND 0
+    </select>
+
+    <select id="getTracking" resultType="com.bigdata.model.entity.SignalCoverage.TypicalSignalStrengthTracking">
+        SELECT
+            SUBSTR(TO_CHAR(time_index,'#'), 7, 2) AS x_rate,
+            NETWORK_NAME,
+            AVG(RSSI) AS rssi
+        FROM
+            Signal_Strength
+
+        <where >
+            <if test = "landmark != null">AND LANDMARK = #{landmark}</if>
+            <if test = "networkType != null">AND NETWORK_TYPE = #{networkType}</if>
+            <if test = "startDate != 0">AND TIME_INDEX &gt; #{startDate} </if>
+            <if test = "endDate != 0">AND TIME_INDEX &lt; #{endDate}</if>
+        </where>
+
+        GROUP BY
+        SUBSTR(TO_CHAR(time_index,'#'), 7, 2),
+        NETWORK_NAME
+
+    </select>
+    <select id="getStatistics"
+            resultType="com.bigdata.model.entity.SignalCoverage.TypicalSignalStrengthStatistics">
+        SELECT
+            LANDMARK,
+            NETWORK_NAME,
+            NETWORK_TYPE,
+            AVG(RSSI) AS RSSI
+        FROM
+            Signal_Strength
+        <where>
+            <if test="startDate != null and startDate != 0">TIME_INDEX &gt; #{startDate} </if>
+            <if test="endDate != null and endDate != 0">AND TIME_INDEX &lt; #{endDate}</if>
+            <if test="networkName != null">AND NETWORK_NAME = #{networkName}</if>
+        </where>
+
+        GROUP BY
+            LANDMARK, NETWORK_NAME,NETWORK_TYPE
+        ORDER BY
+            LANDMARK, NETWORK_NAME,NETWORK_TYPE
+    </select>
+
+</mapper>

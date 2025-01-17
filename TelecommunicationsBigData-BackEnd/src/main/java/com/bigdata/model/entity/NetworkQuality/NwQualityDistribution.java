@@ -3,8 +3,6 @@ package com.bigdata.model.entity.NetworkQuality;
 import lombok.Data;
 
 @Data
-public class nwSpeedRank {
+public class NwQualityDistribution {
     private double speed;
-    private String province;
-    private String nwOperator;
 }
