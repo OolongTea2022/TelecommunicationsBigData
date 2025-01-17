@@ -110,15 +110,15 @@
     const formData = ref({
         nwType:'',
         nwOperator:'',
-        Date:[],//开始和结束日期
+        Date:[]//开始和结束日期
     })
 
 
     //TODO未编写真正的请求函数
     const onSubmit = () => {
         console.log("此时formdata表单信息为：")
-        console.log(formData.Date[0]);
-        console.log(formData.Date[1]);
+        console.log(formData.value.Date[0]);
+        console.log(formData.value.Date[1]);
         console.log(formData);
     }
 
