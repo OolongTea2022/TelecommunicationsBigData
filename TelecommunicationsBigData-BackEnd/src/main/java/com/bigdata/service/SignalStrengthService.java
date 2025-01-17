@@ -12,6 +12,5 @@ import java.util.List;
 public interface SignalStrengthService {
     List<SignalStrengthDistributionVo> getSignalStrengthDistribution(SSDistribution distribution);
     List<TypicalSSTrackingVo> getTypicalSignalStrengthTracking(SSTrackingDTO ssTrackingDTO);
-
     List<TypicalSSStatisticsVo> getTypicalSignalStrengthStatistics(SSStatisticsDTO ssStatisticsDTO);
 }

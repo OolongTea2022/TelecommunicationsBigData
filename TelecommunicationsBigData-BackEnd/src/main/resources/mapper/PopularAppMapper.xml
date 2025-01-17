@@ -6,7 +6,7 @@
 
     <select id="getDistribution" resultType="com.bigdata.model.entity.PopularApp.PopularAppDistribution">
         SELECT
-            sum(UPLOAD_TRAFFIC) as heat,
+            sum(DOWNLOAD_TRAFFIC)+ sum(UPLOAD_TRAFFIC) as heat,
             PACKAGE_NAME,
             APP_NAME
         FROM APP_TRAFFIC

@@ -1,5 +1,6 @@
 package com.bigdata.dao;
 
+import com.bigdata.dto.PopularApp.*;
 import com.bigdata.model.entity.PopularApp.*;
 import org.apache.ibatis.annotations.Mapper;
 
@@ -8,15 +9,15 @@ import java.util.List;
 @Mapper
 public interface PopularAppMapper
 {
-    List<PopularAppDistribution> getDistribution();
+    List<PopularAppDistribution> getDistribution(AppDistributionDTO appDistributionDTO);
 
-    List<PopularAppTrafficDistribution> getTrafficDistribution();
+    List<PopularAppTrafficDistribution> getTrafficDistribution(AppDistributionDTO appDistributionDTO);
 
-    List<PopularAppTrafficRank> getTrafficRank();
+    List<PopularAppTrafficRank> getTrafficRank(TrafficRankDTO trafficRankDTO);
 
-    List<PopularAppTrafficTracking> getTrafficTracking();
+    List<PopularAppTrafficTracking> getTrafficTracking(TrafficTrackingDTO trafficTrackingDTO);
 
-    List<PopularAppUserDIstribution> getUserDIstribution();
+    List<PopularAppUserDIstribution> getUserDIstribution(UserDistributionDTO userDistributionDTO);
 
-    List<TypicalLandmarkAppTrafficRank> getTypicalLandmarkAppTrafficRank();
+    List<TypicalLandmarkAppTrafficRank> getTypicalLandmarkAppTrafficRank(TypeTrafficDTO typeTrafficDTO);
 }
