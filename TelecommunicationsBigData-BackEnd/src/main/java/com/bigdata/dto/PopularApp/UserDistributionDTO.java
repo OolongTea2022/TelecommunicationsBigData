@@ -1,0 +1,8 @@
+package com.bigdata.dto.PopularApp;
+import lombok.Data;
+@Data
+public class UserDistributionDTO {
+    private String userLat;
+    private String userLon;
+    private double heat;
+}
