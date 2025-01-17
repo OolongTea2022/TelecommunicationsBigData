@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bigdata.dao.DataLinksMapper">
+
+    <select id="getDataLinksDistribution" resultType="com.bigdata.model.entity.DataLinks.DataLinksDistribution">
+        SELECT USER_LAT, USER_LON, NETWORK_NAME, MOBILE_NETWORK_TYPE
+        FROM DATACONNECTION
+        <where>
+            <if test="userLat != 0">AND USER_LAT = #{userLat}</if>
+            <if test="userLon != 0">AND USER_LON = #{userLon} </if>
+            <if test="networkName != null">AND NETWORK_NAME = #{networkName} </if>
+            <if test="mobileNetworkType != null">AND MOBILE_NETWORK_TYPE =  #{mobileNetworkType}</if>
+        </where>
+        LIMIT 10
+    </select>
+
+    <select id="getDataLinkStatistics" resultType="com.bigdata.model.entity.DataLinks.DataLinkStatistics">
+        SELECT COUNT(*) AS TCOUNT, NETWORK_NAME, NETWORK_TYPE
+        FROM DATACONNECTION
+        <where>
+            <if test="networkName != null">AND NETWORK_NAME =  #{networkName}</if>
+            <if test="networkType != null">AND NETWORK_TYPE =  #{networkType}</if>
+        </where>
+        GROUP BY NETWORK_NAME, NETWORK_TYPE
+        LIMIT 10
+    </select>
+
+</mapper>

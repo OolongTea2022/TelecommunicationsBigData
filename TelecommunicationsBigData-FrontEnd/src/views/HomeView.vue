@@ -38,9 +38,9 @@
             </template>
             <el-menu-item-group title="信息表 ">
                 <!-- TODO改映射 -->
-            <el-menu-item index="/PathBookView">信号强度分布图</el-menu-item>
-            <el-menu-item index="/ApplyInfoView">典型地标信号强度跟踪图</el-menu-item>
-            <el-menu-item index="/ApplyBookView">典型地标信号强度统计图</el-menu-item>
+            <el-menu-item index="/SignalStrengthDistribution">信号强度分布图</el-menu-item>
+            <el-menu-item index="/TypicalLandmarkSignalStrengthTracking">典型地标信号强度跟踪图</el-menu-item>
+            <el-menu-item index="/TypicalLandmarkSignalStrengthStatistics">典型地标信号强度统计图</el-menu-item>
             </el-menu-item-group>
 
         </el-sub-menu>
@@ -52,11 +52,11 @@
             </template>
             <el-menu-item-group title="信息表">
                 <!-- TODO改映射 -->
-            <el-menu-item index="/PathBookView">网络质量分布图</el-menu-item>
-            <el-menu-item index="/ApplyInfoView">网络质量统计图</el-menu-item>
-            <el-menu-item index="/ApplyBookView">网络速率排名</el-menu-item>
-            <el-menu-item index="/ApplyBookView">典型地标网络质量跟踪图</el-menu-item>
-            <el-menu-item index="/ApplyBookView">典型地标网路质量统计图</el-menu-item>
+            <el-menu-item index="/NetworkQualityDistribution">网络质量分布图</el-menu-item>
+            <el-menu-item index="/NetworkQualityStatistics">网络质量统计图</el-menu-item>
+            <el-menu-item index="/NetworkSpeedRank">网络速率排名</el-menu-item>
+            <el-menu-item index="/TypicalLandmarkNetworkQualityTracking">典型地标网络质量跟踪图</el-menu-item>
+            <el-menu-item index="/TypicalLandmarkNetworkQualityStatistics">典型地标网路质量统计图</el-menu-item>
             </el-menu-item-group>
 
         </el-sub-menu>
@@ -68,8 +68,8 @@
             </template>
             <el-menu-item-group title="信息表 ">
                 <!-- TODO改映射 -->
-            <el-menu-item index="/PathBookView">数据连接率分布图</el-menu-item>
-            <el-menu-item index="/ApplyInfoView">数据连接率统计图</el-menu-item>
+            <el-menu-item index="/DataConnectionRateDistribution">数据连接率分布图</el-menu-item>
+            <el-menu-item index="/DataConnectionRateStatistics">数据连接率统计图</el-menu-item>
             </el-menu-item-group>
 
         </el-sub-menu>
@@ -81,11 +81,11 @@
             </template>
             <el-menu-item-group title="信息表 ">
                 <!-- TODO改映射 -->
-            <el-menu-item index="/PathBookView">热门APP流量分布图</el-menu-item>
-            <el-menu-item index="/ApplyInfoView">热门APP地图</el-menu-item>
-            <el-menu-item index="/ApplyBookView">热门APP流量排名</el-menu-item>
-            <el-menu-item index="/ApplyBookView">热门APP流量跟踪图</el-menu-item>
-            <el-menu-item index="/ApplyBookView">典型地标热门APP流量排名</el-menu-item>
+            <el-menu-item index="/PopularAppTrafficDistribution">热门APP流量分布图</el-menu-item>
+            <el-menu-item index="/PopularAppMap">热门APP地图</el-menu-item>
+            <el-menu-item index="/PopularAppTrafficRank">热门APP流量排名</el-menu-item>
+            <el-menu-item index="/PopularAppTrafficTracking">热门APP流量跟踪图</el-menu-item>
+            <el-menu-item index="/TypicalLandmarkPopularAppTrafficRank">典型地标热门APP流量排名</el-menu-item>
             </el-menu-item-group>
 
         </el-sub-menu>
@@ -97,12 +97,12 @@
             </template>
             <el-menu-item-group title="信息表 ">
                 <!-- TODO改映射 -->
-            <el-menu-item index="/PathBookView">热门手机流量分布图</el-menu-item>
-            <el-menu-item index="/ApplyInfoView">热门手机网络质量排名</el-menu-item>
-            <el-menu-item index="/ApplyBookView">热门手机流量排名</el-menu-item>
-            <el-menu-item index="/ApplyBookView">手机OS流量排名</el-menu-item>
-            <el-menu-item index="/ApplyBookView">热门手机分布图</el-menu-item>
-            <el-menu-item index="/ApplyBookView">手机OS分布图</el-menu-item>
+            <el-menu-item index="/PopularMobilePhoneTrafficDistribution">热门手机流量分布图</el-menu-item>
+            <el-menu-item index="/PopularMobileNetworkQualityRank">热门手机网络质量排名</el-menu-item>
+            <el-menu-item index="/PopularMobileTrafficRank">热门手机流量排名</el-menu-item>
+            <el-menu-item index="/MobileOSTrafficRank">手机OS流量排名</el-menu-item>
+            <el-menu-item index="/PopularMobilePhonesDistribution">热门手机分布图</el-menu-item>
+            <el-menu-item index="/MobileOSDistribution">手机OS分布图</el-menu-item>
             </el-menu-item-group>
 
         </el-sub-menu>
@@ -114,8 +114,8 @@
             </template>
             <el-menu-item-group title="信息表 ">
                 <!-- TODO改映射 -->
-            <el-menu-item index="/PathBookView">连接点数排名</el-menu-item>
-            <el-menu-item index="/ApplyInfoView">连接点地理分布</el-menu-item>
+            <el-menu-item index="/ConnectionPointsRank">连接点数排名</el-menu-item>
+            <el-menu-item index="/ConnectionPointsGeographicalDistribution">连接点地理分布</el-menu-item>
             </el-menu-item-group>
 
         </el-sub-menu>
@@ -127,10 +127,10 @@
             </template>
             <el-menu-item-group title="信息表 ">
                 <!-- TODO改映射 -->
-            <el-menu-item index="/PathBookView">网络质量</el-menu-item>
-            <el-menu-item index="/ApplyInfoView">APP街景图</el-menu-item>
-            <el-menu-item index="/ApplyBookView">OS街景图</el-menu-item>
-            <el-menu-item index="/ApplyBookView">信号覆盖</el-menu-item>
+            <el-menu-item index="/NetworkQuality">网络质量</el-menu-item>
+            <el-menu-item index="/AppStreetView">APP街景图</el-menu-item>
+            <el-menu-item index="/OSStreetView">OS街景图</el-menu-item>
+            <el-menu-item index="/SignalCoverage">信号覆盖</el-menu-item>
             </el-menu-item-group>
 
         </el-sub-menu>

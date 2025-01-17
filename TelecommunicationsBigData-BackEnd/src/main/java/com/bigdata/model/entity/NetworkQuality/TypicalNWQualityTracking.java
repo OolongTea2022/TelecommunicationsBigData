@@ -7,4 +7,5 @@ public class TypicalNWQualityTracking {
     private double speed;
     private String xRate;
     private String nwOperator;
+
 }

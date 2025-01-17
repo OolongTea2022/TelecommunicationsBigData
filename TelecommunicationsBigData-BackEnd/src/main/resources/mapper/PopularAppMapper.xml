@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="com.bigdata.dao.PopularAppMapper">
+    <!--    List<Order> getOrders();-->
+
+    <select id="getDistribution" resultType="com.bigdata.model.entity.PopularApp.PopularAppDistribution">
+        SELECT
+            sum(DOWNLOAD_TRAFFIC)+ sum(UPLOAD_TRAFFIC) as heat,
+            PACKAGE_NAME,
+            APP_NAME
+        FROM APP_TRAFFIC
+        GROUP BY PACKAGE_NAME, APP_NAME
+        ORDER BY heat DESC
+            LIMIT 5
+    </select>
+
+
+    <select id="getTrafficDistribution" resultType="com.bigdata.model.entity.PopularApp.PopularAppTrafficDistribution">
+        SELECT
+            sum(DOWNLOAD_TRAFFIC)+ sum(UPLOAD_TRAFFIC) as heat,
+            PACKAGE_NAME,
+            APP_NAME
+        FROM APP_TRAFFIC
+        GROUP BY PACKAGE_NAME, APP_NAME
+        ORDER BY heat DESC
+            LIMIT 10
+    </select>
+
+
+    <select id="getTrafficRank" resultType="com.bigdata.model.entity.PopularApp.PopularAppTrafficRank">
+        SELECT
+            SUM(b.ULSPEED + b.DLSPEED) AS SPEED,
+            APP_NAME
+        FROM
+            APP_TRAFFIC a
+                JOIN
+            NWquality b ON
+                a.USER_LON = b.GPSLON AND a.USER_LAT = b.GPSLAT
+        WHERE
+            a.USER_LON IS NOT NULL AND b.GPSLON IS NOT NULL AND a.USER_LAT IS NOT NULL AND b.GPSLAT IS NOT NULL
+        GROUP BY
+            a.APP_NAME
+        ORDER BY
+            SPEED DESC
+            LIMIT 10
+    </select>
+
+
+    <select id="getTrafficTracking" resultType="com.bigdata.model.entity.PopularApp.PopularAppTrafficTracking">
+
+
+    </select>
+
+
+
+    <select id="getUserDIstribution" resultType="com.bigdata.model.entity.PopularApp.PopularAppUserDIstribution">
+        SELECT
+            USER_LON,
+            USER_LAT,
+            UPLOAD_TRAFFIC AS HEAT
+        FROM
+            APP_TRAFFIC limit 5
+    </select>
+
+
+    <select id="getTypicalLandmarkAppTrafficRank" resultType="com.bigdata.model.entity.PopularApp.TypicalLandmarkAppTrafficRank">
+        SELECT
+            SUM(nw.ulspeed + nw.ulspeed) AS speed,
+            at.app_name as app_name,
+            at.network_type as network_type
+        FROM
+            app_traffic at
+INNER JOIN
+    nwquality nw ON at.user_lon = nw.gpslon AND at.user_lat = nw.gpslat
+        GROUP BY
+            at.app_name, at.network_type
+        ORDER BY
+            speed DESC
+            LIMIT 10
+    </select>
+
+
+</mapper>

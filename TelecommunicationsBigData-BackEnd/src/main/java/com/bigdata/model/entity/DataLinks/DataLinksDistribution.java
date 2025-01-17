@@ -4,8 +4,8 @@ import lombok.Data;
 
 @Data
 public class DataLinksDistribution {
-    private String userLat;
-    private String userLon;
+    private double userLat;
+    private double userLon;
     private String networkName;
     private String mobileNetworkType;
 }

@@ -4,7 +4,7 @@ import lombok.Data;
 
 @Data
 public class TypicalSignalStrengthStatistics {
-    private long rssi;
+    private double rssi;
     private String landmark;
     private String networkType;
     private String networkName;
