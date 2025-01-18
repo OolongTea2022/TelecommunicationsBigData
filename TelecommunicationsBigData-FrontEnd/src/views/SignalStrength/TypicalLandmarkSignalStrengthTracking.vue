@@ -13,7 +13,7 @@
     </el-form-item>
     <el-form-item label="网络制式">
       <el-select
-        v-model="formInline.region"
+        v-model="formInline.network"
         placeholder=" "
         clearable
       >
@@ -24,7 +24,7 @@
     </el-form-item>
     <el-form-item label="时间粒度">
       <el-select
-        v-model="formInline.region"
+        v-model="formInline.time"
         placeholder=" "
         clearable
       >

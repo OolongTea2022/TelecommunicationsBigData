@@ -56,7 +56,7 @@
             <el-menu-item index="/NetworkQualityStatistics">网络质量统计图</el-menu-item>
             <el-menu-item index="/NetworkSpeedRank">网络速率排名</el-menu-item>
             <el-menu-item index="/TypicalLandmarkNetworkQualityTracking">典型地标网络质量跟踪图</el-menu-item>
-            <el-menu-item index="/TypicalLandmarkNetworkQualityStatistics">典型地标网路质量统计图</el-menu-item>
+            <el-menu-item index="/TypicalLandmarkNetworkQualityStatistics">典型地标网络质量统计图</el-menu-item>
             </el-menu-item-group>
 
         </el-sub-menu>
