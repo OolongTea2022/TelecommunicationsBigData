@@ -57,15 +57,15 @@ import { onMounted, reactive, ref } from 'vue';
 import { getTrafficRank } from '../../api/hot_app';
 
 const datasetSource = ref([
-    { name: 'Matcha Latte', all: 90 },  
-    { name: 'Milk Tea', all: 150 },    
-    { name: 'Cheese Cocoa', all: 95 },
-    { name: 'Walnut Brownie', all: 55 },
-    { name: 'Walnut Brodawnie', all: 355 },
-    { name: 'Walnut Brodfdfawnie', all: 315 },
-    { name: 'Test Item 1', all: 200 },  // 新增数据项
-    { name: 'Test Item 2', all: 150 },  // 新增数据项
-    // 可以继续添加数据项
+    // { name: 'Matcha Latte', all: 90 },  
+    // { name: 'Milk Tea', all: 150 },    
+    // { name: 'Cheese Cocoa', all: 95 },
+    // { name: 'Walnut Brownie', all: 55 },
+    // { name: 'Walnut Brodawnie', all: 355 },
+    // { name: 'Walnut Brodfdfawnie', all: 315 },
+    // { name: 'Test Item 1', all: 200 },  // 新增数据项
+    // { name: 'Test Item 2', all: 150 },  // 新增数据项
+    // // 可以继续添加数据项
   ]);
 
 
@@ -144,35 +144,29 @@ const formInline = reactive({
 });
 
 const onSubmit = async () => {
+  //TODO偷鸡写法，传递空参数，后端写死回传数据
+  const params = {};
 
-//TODO偷鸡写法，传递空参数，后端写死回传数据
-const params = {};
+  console.log("发送前", params);
+  // Call the searchMistakeList function to get the data
+  const res = await getTrafficRank(params);
 
+  console.log("接受", res);
 
-console.log("发送前",params);
-// Call the searchMistakeList function to get the data
-const res = await getTrafficRank(params);
+  if (res.data.code == '200') {
+    // 提取 heat 和 appName 并更新 datasetSource
+    const sortedData = res.data.data
+      .map(item => ({
+        name: item.appName,
+        all: item.heat
+      }))
+      .sort((a, b) => b.all - a.all) // 按 heat 降序排序
 
-console.log("接受" , res);
-
-if (res.data.code == '200') {
-    // 提取 userLon 和 userLat 并更新 points
-    datasetSource.value = res.data.data.map(item => {
-      name: item.appName
-      all: item.heat
-        // parseFloat(item.userLon), // 经度
-        // parseFloat(item.userLat), // 纬度
-        // 1 // 固定值
-    });
+    datasetSource.value = sortedData.slice(0, 5); // 取前5个数据
     showImg();
-    console.log("zheshi_point",points)
-} else {
+  } else {
     console.error("获取出错记录失败", res.message);
-}
-
-
-
-
+  }
 };
 
 </script>
