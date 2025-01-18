@@ -1,7 +1,7 @@
 import myAxios from "../utils/request.js";
 
 // getDistribution
-export const userRegister = async (params) => {
+export const getDistribution = async (params) => {
     const res = await myAxios.request({
         url: "/SignalStrength/Distribution",
         method: "POST",
@@ -12,7 +12,7 @@ export const userRegister = async (params) => {
 
 
 // getTypicalSignalStrengthTrackingByLandmark
-export const userLogin = async (params) => {
+export const getTypicalSignalStrengthTrackingByLandmark = async (params) => {
     const res = await myAxios.request({
         url: "/SignalStrength/TypicalSignalStrengthStatistics",
         method: "POST",
@@ -23,7 +23,7 @@ export const userLogin = async (params) => {
 
 
 // getTypicalSignalStrengthTracking
-export const userLogout = async (params) => {
+export const getTypicalSignalStrengthTracking = async (params) => {
     const res = await myAxios.request({
         url: "/SignalStrength/TypicalSignalStrengthTracking",
         method: "POST",

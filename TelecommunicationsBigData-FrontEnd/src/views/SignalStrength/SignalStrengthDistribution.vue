@@ -89,7 +89,7 @@
             </el-form-item>
 
             <el-form-item>
-                <el-button type="primary" @click="onSubmit">Query</el-button>
+                <el-button type="primary" @click="handleSearch">Query</el-button>
             </el-form-item>
         </el-form>
 
@@ -105,6 +105,7 @@
     import * as echarts from 'echarts';
     import 'echarts/extension/bmap/bmap';
     import { onMounted , ref } from 'vue';
+    import { getDistribution } from '../../api/signal_strength'
 
 
     const formData = ref({
@@ -114,13 +115,33 @@
     })
 
 
-    //TODO未编写真正的请求函数
-    const onSubmit = () => {
-        console.log("此时formdata表单信息为：")
-        console.log(formData.value.Date[0]);
-        console.log(formData.value.Date[1]);
-        console.log(formData);
-    }
+    const handleSearch = async () => {
+        const params = {
+            nwType:formData.value.nwType,
+            nwOperator:formData.value.nwOperator,
+            startDate:formData.value.Date[0],
+            endDate:formData.value.Date[1]
+        };
+        // Call the searchMistakeList function to get the data
+        const res = await getDistribution(params);
+
+        console.log(res);
+
+        // if (res.data.code == '1') {
+        //     totalNumber.value = res.data.data.total; // Update total number
+        //     mistakeData.value = res.data.data.mistakes; // Update mistake data
+        // } else {
+        //     console.error("获取出错记录失败", res.message);
+        // }
+    };
+
+    // //TODO未编写真正的请求函数
+    // const onSubmit = () => {
+    //     console.log("此时formdata表单信息为：")
+    //     console.log(formData.value.Date[0]);
+    //     console.log(formData.value.Date[1]);
+    //     console.log(formData);
+    // }
 
 
 
