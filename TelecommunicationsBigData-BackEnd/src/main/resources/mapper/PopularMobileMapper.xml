@@ -79,7 +79,7 @@
 
     <select id="getPopularMobileTrafficRank"
             resultType="com.bigdata.model.entity.PopularMobile.PopularMobileTrafficRank"
-            parameterType="com.bigdata.model.dto.PopularMobileTrafficRankDTO">
+            parameterType="com.bigdata.model.dto.PopularMobile.PopularMobileTrafficRankDTO">
 
         SELECT
             SUM(<choose>
@@ -122,7 +122,7 @@
 
     <select id="getPopularMobileOSTrafficRank"
             resultType="com.bigdata.model.entity.PopularMobile.PopularMobileOSTrafficRank"
-            parameterType="com.bigdata.model.dto.PopularMobileOSTrafficRankDTO">
+            parameterType="com.bigdata.model.dto.PopularMobile.PopularMobileOSTrafficRankDTO">
         SELECT
             SUM(
                 <choose>
@@ -163,7 +163,7 @@
 
     <select id="getPopularMobileDistribution"
             resultType="com.bigdata.model.entity.PopularMobile.PopularMobileDistribution"
-            parameterType="com.bigdata.model.dto.PopularMobileDistributionDTO">
+            parameterType="com.bigdata.model.dto.PopularMobile.PopularMobileDistributionDTO">
         SELECT
             SUM(
                 <choose>
@@ -200,7 +200,7 @@
 
 
     <select id="getMobileOSDistribution" resultType="com.bigdata.model.entity.PopularMobile.MobileOSDistribution"
-            parameterType="com.bigdata.model.dto.MobileOSDistributionDTO">
+            parameterType="com.bigdata.model.dto.PopularMobile.MobileOSDistributionDTO">
         SELECT
             SUM(<choose>
                 <when test = "dto.trafficType != null and dto.trafficType == 'upload' " >
@@ -233,6 +233,31 @@
             os_version
         ORDER BY
             heat DESC
+    </select>
+
+
+    <select id="getTop5PopularMobileTraffic"
+            resultType="com.bigdata.model.entity.PopularMobile.PopularMobileDistribution"
+            parameterType="com.bigdata.model.dto.PopularMobile.PopularMobileTrafficDistributionTop5DTO">
+
+        SELECT
+        COUNT(*) AS heat,
+        companymodel
+        FROM
+        app_traffic
+        WHERE
+        companymodel != 'NULL'
+        <if test="dto.networkName != null">
+            AND network_name = #{dto.networkName}
+        </if>
+        <if test="dto.startTime != null and dto.endTime != null">
+            AND start_time &gt;= #{dto.startTime} AND end_time &lt;= #{dto.endTime}
+        </if>
+        GROUP BY
+        companymodel
+        ORDER BY
+        heat DESC
+        LIMIT 5
     </select>
 
 </mapper>

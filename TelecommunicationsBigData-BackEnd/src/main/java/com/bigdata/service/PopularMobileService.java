@@ -1,6 +1,6 @@
 package com.bigdata.service;
 
-import com.bigdata.model.dto.*;
+import com.bigdata.model.dto.PopularMobile.*;
 import com.bigdata.model.entity.PopularMobile.*;
 
 import java.util.List;
@@ -9,6 +9,9 @@ import java.util.List;
  *
  */
 public interface PopularMobileService {
+
+    // 获取热门手机流量Top5
+    List<PopularMobileDistribution> getTop5PopularMobileTraffic(PopularMobileTrafficDistributionTop5DTO dto);
 
     List<PopularMobileTrafficDistribution> getPopularMobileTrafficDistribution(PopularMobileTrafficDistributionDTO dto);
 

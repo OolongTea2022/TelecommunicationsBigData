@@ -1,13 +1,7 @@
 package com.bigdata.service;
 
-import com.bigdata.VO.NetworkQuality.NwQualityStatisticsVo;
-import com.bigdata.VO.NetworkQuality.NwSpeedRankVo;
-import com.bigdata.VO.NetworkQuality.TypicalNWQualityStatisticsVo;
-import com.bigdata.VO.NetworkQuality.TypicalNWQualityTrackingVo;
-import com.bigdata.dto.nwQuality.LandmarkQualityStatisticsDTO;
-import com.bigdata.dto.nwQuality.NwTrackingDTO;
-import com.bigdata.dto.nwQuality.QualityStatisticsDTO;
-import com.bigdata.dto.nwQuality.SpeedRankDTO;
+import com.bigdata.vo.NetworkQuality.*;
+import com.bigdata.dto.nwQuality.*;
 
 import java.util.List;
 
@@ -20,4 +14,5 @@ public interface NwQualityService {
 
     List<TypicalNWQualityStatisticsVo> getLandmarkStatistics(LandmarkQualityStatisticsDTO statisticsDTO);
 
+    List<NwQualityDistributionVo> getDistribution(DistributionDTO distributionDTO);
 }

@@ -1,16 +1,13 @@
 package com.bigdata.controller;
 
-import com.bigdata.model.dto.*;
+import com.bigdata.model.dto.PopularMobile.*;
 import com.bigdata.model.entity.PopularMobile.*;
 import com.bigdata.result.Result;
 import com.bigdata.service.PopularMobileService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -23,6 +20,15 @@ import java.util.List;
 public class PopularMobileController {
     @Autowired
     private PopularMobileService popularMobileService;
+
+    @Operation(summary = "获取热门手机流量Top5")
+    @PostMapping("/getTop5PopularMobileTraffic")
+    public Result<List<PopularMobileDistribution>> getTop5PopularMobileTraffic(
+            @Parameter(description = "查询参数", required = true) @RequestBody PopularMobileTrafficDistributionTop5DTO dto
+    ) {
+        List<PopularMobileDistribution> top5PopularMobileTraffic = popularMobileService.getTop5PopularMobileTraffic(dto);
+        return Result.success(top5PopularMobileTraffic);
+    }
 
     @Operation(summary = "获取热门手机流量分布")
     @PostMapping("/trafficDistribution")

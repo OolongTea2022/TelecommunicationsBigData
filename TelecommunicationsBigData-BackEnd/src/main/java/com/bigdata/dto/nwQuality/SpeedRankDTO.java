@@ -11,4 +11,6 @@ public class SpeedRankDTO {
     private long startDate;
     @Schema(description = "截止日期",example = "2019090517")
     private long endDate;
+    @Schema(description = "网络速度类型",example = "ulspeed")
+    private String speedType;
 }

@@ -1,4 +1,4 @@
-package com.bigdata.VO.SignalCoverage;
+package com.bigdata.vo.SignalCoverage;
 
 import lombok.Data;
 

@@ -24,7 +24,14 @@
         FROM
             NWQUALITY
         <where>
-            <if test="nwOperator != null">AND NWOPERATOR = #{nwOperator}</if>
+            <choose>
+                <when test="nwOperator == 'ALL'">
+                    AND NWOPERATOR  IN ('CMCC', 'CUCC', 'CTCC')
+                </when>
+                <otherwise>
+                    <if test="nwOperator != null">AND NWOPERATOR = #{nwOperator}</if>
+                </otherwise>
+            </choose>
             <choose>
                 <when test="nwType == 'ALL'">
                     AND NWTYPE IN ('2G', '3G', '4G','WIFI')
@@ -63,7 +70,14 @@
         FROM
             NWQUALITY
         <where>
-            <if test="nwOperator != null">AND NWOPERATOR = #{nwOperator}</if>
+            <choose>
+                <when test="nwOperator == 'ALL'">
+                    AND NWOPERATOR  IN ('CMCC', 'CUCC', 'CTCC')
+                </when>
+                <otherwise>
+                    <if test="nwOperator != null">AND NWOPERATOR = #{nwOperator}</if>
+                </otherwise>
+            </choose>
             <if test="startDate != null and startDate != 0">AND DAYTIME &gt; #{startDate} </if>
             <if test="endDate != null and endDate != 0">AND DAYTIME &lt; #{endDate}</if>
         </where>
@@ -73,6 +87,7 @@
             PROVINCE ASC, NWOPERATOR ASC
 
     </select>
+
     <select id="getTypicalTracking"
             resultType="com.bigdata.model.entity.NetworkQuality.TypicalNWQualityTracking">
         SELECT
@@ -105,7 +120,14 @@
         FROM
             NWQUALITY
         <where>
-            <if test="nwOperator != null ">AND NWOPERATOR = #{nwOperator}</if>
+            <choose>
+                <when test="nwOperator == 'ALL'">
+                    AND NWOPERATOR  IN ('CMCC', 'CUCC', 'CTCC')
+                </when>
+                <otherwise>
+                    <if test="nwOperator != null">AND NWOPERATOR = #{nwOperator}</if>
+                </otherwise>
+            </choose>
             <choose>
                 <when test="nwType == 'ALL'">
                     AND NWTYPE IN ('2G', '3G', '4G','WIFI')
@@ -124,6 +146,7 @@
         ORDER BY
             x_rate
     </select>
+
     <select id="getLandmarkStatistics"
             resultType="com.bigdata.model.entity.NetworkQuality.TypicalNWQualityStatistics">
         SELECT
@@ -146,7 +169,14 @@
         FROM
             NWQUALITY
         <where>
-            <if test="nwOperator != null ">AND NWOPERATOR = #{nwOperator}</if>
+            <choose>
+                <when test="nwOperator == 'ALL'">
+                    AND NWOPERATOR  IN ('CMCC', 'CUCC', 'CTCC')
+                </when>
+                <otherwise>
+                    <if test="nwOperator != null">AND NWOPERATOR = #{nwOperator}</if>
+                </otherwise>
+            </choose>
             <choose>
                 <when test="nwType == 'ALL'">
                     AND NWTYPE IN ('2G', '3G', '4G','WIFI')
@@ -164,5 +194,49 @@
         ORDER BY
             NWOPERATOR ASC,
             LANDMARK ASC
+    </select>
+    <select id="getDistribution" resultType="com.bigdata.model.entity.NetworkQuality.NwQualityDistribution">
+        SELECT
+            GPSLON as userLon,
+            GPSLAT as userLat,
+        <choose>
+            <when test="speedType == 'ulspeed'">
+                AVG(ULSPEED) AS SPEED
+            </when>
+            <when test="speedType == 'dlspeed'">
+                AVG(DLSPEED) AS SPEED
+            </when>
+            <when test="speedType == 'latency'">
+                AVG(LATENCY) AS SPEED
+            </when>
+            <otherwise>
+                AVG(ULSPEED) AS SPEED
+            </otherwise>
+        </choose>
+        FROM
+            NWQUALITY
+        <where>
+            <choose>
+                <when test="nwOperator == 'ALL'">
+                    AND NWOPERATOR  IN ('CMCC', 'CUCC', 'CTCC')
+                </when>
+                <otherwise>
+                    <if test="nwOperator != null">AND NWOPERATOR = #{nwOperator}</if>
+                </otherwise>
+            </choose>
+            <choose>
+                <when test="nwType == 'ALL'">
+                    AND NWTYPE IN ('2G', '3G', '4G','WIFI')
+                </when>
+                <otherwise>
+                    <if test="nwType != null"> AND NWTYPE = #{nwType}</if>
+                </otherwise>
+            </choose>
+            <if test="startDate != null and startDate != 0">AND DAYTIME &gt; #{startDate} </if>
+            <if test="endDate != null and endDate != 0">AND DAYTIME &lt; #{endDate}</if>
+        </where>
+        GROUP BY
+            USERLON,
+            USERLAT
     </select>
 </mapper>

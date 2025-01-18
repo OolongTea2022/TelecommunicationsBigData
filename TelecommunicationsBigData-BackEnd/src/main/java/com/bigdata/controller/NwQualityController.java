@@ -1,13 +1,7 @@
 package com.bigdata.controller;
 
-import com.bigdata.VO.NetworkQuality.NwQualityStatisticsVo;
-import com.bigdata.VO.NetworkQuality.NwSpeedRankVo;
-import com.bigdata.VO.NetworkQuality.TypicalNWQualityStatisticsVo;
-import com.bigdata.VO.NetworkQuality.TypicalNWQualityTrackingVo;
-import com.bigdata.dto.nwQuality.LandmarkQualityStatisticsDTO;
-import com.bigdata.dto.nwQuality.NwTrackingDTO;
-import com.bigdata.dto.nwQuality.QualityStatisticsDTO;
-import com.bigdata.dto.nwQuality.SpeedRankDTO;
+import com.bigdata.vo.NetworkQuality.*;
+import com.bigdata.dto.nwQuality.*;
 import com.bigdata.result.Result;
 import com.bigdata.service.NwQualityService;
 import lombok.extern.slf4j.Slf4j;
@@ -27,6 +21,11 @@ public class NwQualityController {
     @Autowired
     private NwQualityService nwQualityService;
 
+    @PostMapping("/Distribution")
+    public Result<List<NwQualityDistributionVo>> getDistribution(@RequestBody DistributionDTO distributionDTO) {
+        log.info("getDistribution start");
+        return Result.success(nwQualityService.getDistribution(distributionDTO));
+    }
     //11
     @PostMapping("/Statistics")
     public Result<List<NwQualityStatisticsVo>> getQualityStatistics(@RequestBody QualityStatisticsDTO qualityStatisticsDTO) {

@@ -1,8 +1,8 @@
 package com.bigdata.service;
 
-import com.bigdata.VO.SignalCoverage.SignalStrengthDistributionVo;
-import com.bigdata.VO.SignalCoverage.TypicalSSTrackingVo;
-import com.bigdata.VO.SignalCoverage.TypicalSSStatisticsVo;
+import com.bigdata.vo.SignalCoverage.SignalStrengthDistributionVo;
+import com.bigdata.vo.SignalCoverage.TypicalSSStatisticsVo;
+import com.bigdata.vo.SignalCoverage.TypicalSSTrackingVo;
 import com.bigdata.dto.SignalStrength.SSDistribution;
 import com.bigdata.dto.SignalStrength.SSStatisticsDTO;
 import com.bigdata.dto.SignalStrength.SSTrackingDTO;

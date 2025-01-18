@@ -1,4 +1,4 @@
-package com.bigdata.model.dto;
+package com.bigdata.model.dto.PopularMobile;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;

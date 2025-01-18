@@ -1,7 +1,7 @@
 package com.bigdata.controller;
 
-import com.bigdata.VO.DataLinks.DistributionVo;
-import com.bigdata.VO.DataLinks.StatisticsVo;
+import com.bigdata.vo.DataLinks.DistributionVo;
+import com.bigdata.vo.DataLinks.StatisticsVo;
 import com.bigdata.dto.DataLinks.DistributionDTO;
 import com.bigdata.dto.DataLinks.StatisticsDTO;
 import com.bigdata.result.Result;

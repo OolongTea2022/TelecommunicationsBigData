@@ -1,4 +1,4 @@
-package com.bigdata.VO.NetworkQuality;
+package com.bigdata.vo.NetworkQuality;
 
 import lombok.Data;
 

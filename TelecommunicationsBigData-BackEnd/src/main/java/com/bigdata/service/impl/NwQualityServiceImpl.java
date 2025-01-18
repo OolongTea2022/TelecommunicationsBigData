@@ -1,24 +1,14 @@
 package com.bigdata.service.impl;
 
-import com.bigdata.VO.NetworkQuality.NwQualityStatisticsVo;
-import com.bigdata.VO.NetworkQuality.NwSpeedRankVo;
-import com.bigdata.VO.NetworkQuality.TypicalNWQualityStatisticsVo;
-import com.bigdata.VO.NetworkQuality.TypicalNWQualityTrackingVo;
+import com.bigdata.vo.NetworkQuality.*;
 import com.bigdata.dao.NwQualityMapper;
-import com.bigdata.dto.nwQuality.LandmarkQualityStatisticsDTO;
-import com.bigdata.dto.nwQuality.NwTrackingDTO;
-import com.bigdata.dto.nwQuality.QualityStatisticsDTO;
-import com.bigdata.dto.nwQuality.SpeedRankDTO;
-import com.bigdata.model.entity.NetworkQuality.NwQualityStatistics;
-import com.bigdata.model.entity.NetworkQuality.NwSpeedRank;
-import com.bigdata.model.entity.NetworkQuality.TypicalNWQualityStatistics;
-import com.bigdata.model.entity.NetworkQuality.TypicalNWQualityTracking;
+import com.bigdata.dto.nwQuality.*;
+import com.bigdata.model.entity.NetworkQuality.*;
 import com.bigdata.service.NwQualityService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -27,6 +17,19 @@ public class NwQualityServiceImpl implements NwQualityService {
 
     @Autowired
     private NwQualityMapper nwQualityMapper;
+
+
+    @Override
+    public List<NwQualityDistributionVo> getDistribution(DistributionDTO distributionDTO) {
+        List<NwQualityDistribution> list = nwQualityMapper.getDistribution(distributionDTO);
+        List<NwQualityDistributionVo> voList = list.parallelStream()
+                .map(item->{
+                    NwQualityDistributionVo vo = new NwQualityDistributionVo();
+                    BeanUtils.copyProperties(item, vo);
+                    return vo;
+                }).collect(Collectors.toList());
+        return voList;
+    }
 
     @Override
     public List<NwQualityStatisticsVo> getQualityStatistics(QualityStatisticsDTO statisticsDTO) {

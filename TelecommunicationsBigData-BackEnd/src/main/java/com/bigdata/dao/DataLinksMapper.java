@@ -2,8 +2,8 @@ package com.bigdata.dao;
 
 import com.bigdata.dto.DataLinks.DistributionDTO;
 import com.bigdata.dto.DataLinks.StatisticsDTO;
-import com.bigdata.model.entity.DataLinks.DataLinksDistribution;
 import com.bigdata.model.entity.DataLinks.DataLinkStatistics;
+import com.bigdata.model.entity.DataLinks.DataLinksDistribution;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;

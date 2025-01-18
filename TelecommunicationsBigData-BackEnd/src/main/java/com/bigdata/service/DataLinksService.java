@@ -1,11 +1,10 @@
 package com.bigdata.service;
 
-import com.bigdata.VO.DataLinks.DistributionVo;
-import com.bigdata.VO.DataLinks.StatisticsVo;
+import com.bigdata.vo.DataLinks.DistributionVo;
+import com.bigdata.vo.DataLinks.StatisticsVo;
 import com.bigdata.dto.DataLinks.DistributionDTO;
 import com.bigdata.dto.DataLinks.StatisticsDTO;
-import com.bigdata.model.entity.DataLinks.DataLinksDistribution;
-import com.bigdata.model.entity.DataLinks.DataLinkStatistics;
+
 import java.util.List;
 
 public interface DataLinksService {

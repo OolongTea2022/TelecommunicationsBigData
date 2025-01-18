@@ -1,4 +1,4 @@
-package com.bigdata.VO.PopularApp;
+package com.bigdata.vo.PopularApp;
 import lombok.Data;
 
 @Data

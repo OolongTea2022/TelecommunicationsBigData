@@ -1,4 +1,4 @@
-package com.bigdata.VO.DataLinks;
+package com.bigdata.vo.DataLinks;
 
 import lombok.Data;
 

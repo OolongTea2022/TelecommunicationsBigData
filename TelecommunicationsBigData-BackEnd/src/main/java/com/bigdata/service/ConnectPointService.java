@@ -1,7 +1,7 @@
 package com.bigdata.service;
 
-import com.bigdata.model.dto.ConnectPointDistributionDTO;
-import com.bigdata.model.dto.ConnectPointRankDTO;
+import com.bigdata.model.dto.ConnectPoint.ConnectPointDistributionDTO;
+import com.bigdata.model.dto.ConnectPoint.ConnectPointRankDTO;
 import com.bigdata.model.entity.ConnectPoint.ConnectPointDistribution;
 import com.bigdata.model.entity.ConnectPoint.ConnectPointRank;
 

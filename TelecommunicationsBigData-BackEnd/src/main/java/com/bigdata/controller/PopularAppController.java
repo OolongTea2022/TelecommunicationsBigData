@@ -1,12 +1,11 @@
 package com.bigdata.controller;
 
-import com.bigdata.VO.PopularApp.*;
+import com.bigdata.vo.PopularApp.*;
 import com.bigdata.dto.PopularApp.*;
 import com.bigdata.result.Result;
 import com.bigdata.service.PopularAppService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;

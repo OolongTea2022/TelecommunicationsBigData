@@ -1,7 +1,7 @@
 package com.bigdata.service.impl;
 
 import com.bigdata.dao.PopularMobileMapper;
-import com.bigdata.model.dto.*;
+import com.bigdata.model.dto.PopularMobile.*;
 import com.bigdata.model.entity.PopularMobile.*;
 import com.bigdata.service.PopularMobileService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +16,11 @@ import java.util.List;
 public class PopularMobileServiceImpl implements PopularMobileService {
     @Autowired
     private PopularMobileMapper popularMobileMapper;
+
+    @Override
+    public List<PopularMobileDistribution> getTop5PopularMobileTraffic(PopularMobileTrafficDistributionTop5DTO dto) {
+        return popularMobileMapper.getTop5PopularMobileTraffic(dto);
+    }
 
     @Override
     public List<PopularMobileTrafficDistribution> getPopularMobileTrafficDistribution(PopularMobileTrafficDistributionDTO dto) {

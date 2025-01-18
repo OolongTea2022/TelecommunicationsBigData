@@ -3,8 +3,8 @@ package com.bigdata.vo.NetworkQuality;
 import lombok.Data;
 
 @Data
-public class NwQualityStatisticsVo {
+public class NwQualityDistributionVo {
     private double speed;
-    private String nwOperator;
-    private String nwType;
+    private String userLat;
+    private String userLon;
 }

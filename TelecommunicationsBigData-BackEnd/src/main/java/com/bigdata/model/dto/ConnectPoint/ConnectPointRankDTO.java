@@ -1,4 +1,4 @@
-package com.bigdata.model.dto;
+package com.bigdata.model.dto.ConnectPoint;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;

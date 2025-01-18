@@ -1,6 +1,6 @@
 package com.bigdata.dao;
 
-import com.bigdata.model.dto.*;
+import com.bigdata.model.dto.PopularMobile.*;
 import com.bigdata.model.entity.PopularMobile.*;
 import org.apache.ibatis.annotations.Param;
 
@@ -10,6 +10,9 @@ import java.util.List;
  *
  */
 public interface PopularMobileMapper {
+    // 获取热门手机流量Top5
+    List<PopularMobileDistribution> getTop5PopularMobileTraffic(@Param("dto") PopularMobileTrafficDistributionTop5DTO dto);
+
     // 热门手机流量分布
     List<PopularMobileTrafficDistribution> getPopularMobileTrafficDistribution(@Param("dto") PopularMobileTrafficDistributionDTO dto);
 

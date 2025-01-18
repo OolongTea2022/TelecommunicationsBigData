@@ -1,7 +1,7 @@
 package com.bigdata.service.impl;
 
 
-import com.bigdata.VO.PopularApp.*;
+import com.bigdata.vo.PopularApp.*;
 import com.bigdata.dao.PopularAppMapper;
 import com.bigdata.dto.PopularApp.*;
 import com.bigdata.model.entity.PopularApp.*;

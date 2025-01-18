@@ -1,13 +1,7 @@
 package com.bigdata.dao;
 
-import com.bigdata.dto.nwQuality.LandmarkQualityStatisticsDTO;
-import com.bigdata.dto.nwQuality.NwTrackingDTO;
-import com.bigdata.dto.nwQuality.QualityStatisticsDTO;
-import com.bigdata.dto.nwQuality.SpeedRankDTO;
-import com.bigdata.model.entity.NetworkQuality.NwQualityStatistics;
-import com.bigdata.model.entity.NetworkQuality.NwSpeedRank;
-import com.bigdata.model.entity.NetworkQuality.TypicalNWQualityStatistics;
-import com.bigdata.model.entity.NetworkQuality.TypicalNWQualityTracking;
+import com.bigdata.dto.nwQuality.*;
+import com.bigdata.model.entity.NetworkQuality.*;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
@@ -22,4 +16,6 @@ public interface NwQualityMapper {
     List<TypicalNWQualityTracking> getTypicalTracking(NwTrackingDTO trackingDTO);
 
     List<TypicalNWQualityStatistics> getLandmarkStatistics(LandmarkQualityStatisticsDTO statisticsDTO);
+
+    List<NwQualityDistribution> getDistribution(DistributionDTO distributionDTO);
 }

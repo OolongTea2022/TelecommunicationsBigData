@@ -10,7 +10,7 @@
             <if test="userLon != 0">AND USER_LON = #{userLon} </if>
             <if test="nwOperator != null">AND NETWORK_NAME = #{nwOperator} </if>
             <choose>
-                <when test="networkType == 'ALL'">
+                <when test="nwType == 'ALL'">
                     NETWORK_TYPE IN ('2G', '3G', '4G','WIFI')
                 </when>
                 <otherwise>

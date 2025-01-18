@@ -1,14 +1,14 @@
-package com.bigdata.model.dto;
+package com.bigdata.model.dto.PopularMobile;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
 /**
- * 用于热门手机分布图的DTO
+ * 用于手机OS流量排名的DTO
  */
 @Data
-@Schema(description = "用于热门手机分布图的DTO")
-public class PopularMobileDistributionDTO {
+@Schema(description = "用于手机OS流量排名的DTO")
+public class PopularMobileOSTrafficRankDTO {
     @Schema(description = "网络运营商", example = "CUCC")
     private String networkName;
 
