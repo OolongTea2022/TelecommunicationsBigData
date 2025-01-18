@@ -5,14 +5,19 @@ import com.bigdata.model.vo.NetworkQuality.*;
 import com.bigdata.dao.NwQualityMapper;
 import com.bigdata.model.entity.NetworkQuality.*;
 import com.bigdata.service.NwQualityService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @Service
+@Slf4j
 public class NwQualityServiceImpl implements NwQualityService {
 
     @Autowired
@@ -21,14 +26,37 @@ public class NwQualityServiceImpl implements NwQualityService {
 
     @Override
     public List<NwQualityDistributionVo> getDistribution(DistributionDTO distributionDTO) {
+        log.info(distributionDTO.toString());
+        double llat = Double.parseDouble(distributionDTO.getLlat());
+        double rlat = Double.parseDouble(distributionDTO.getRlat());
+        double ulon = Double.parseDouble(distributionDTO.getUlon());
+        double dlon = Double.parseDouble(distributionDTO.getDlon());
+        double cellSizeLat = (rlat - llat+49)/50;
+        double cellSizeLon = (ulon - dlon+49)/50;
         List<NwQualityDistribution> list = nwQualityMapper.getDistribution(distributionDTO);
-        List<NwQualityDistributionVo> voList = list.parallelStream()
-                .map(item->{
-                    NwQualityDistributionVo vo = new NwQualityDistributionVo();
-                    BeanUtils.copyProperties(item, vo);
-                    return vo;
-                }).collect(Collectors.toList());
-        return voList;
+        log.info(String.valueOf(list.size()));
+        double[][] result = new double[51][51];
+        double[][] number = new double[51][51];
+
+        list.forEach(item->{
+            int lnumber = (int) ((Double.parseDouble(item.getUserLat()) - llat)/cellSizeLat);
+            int dnumber = (int) ((Double.parseDouble(item.getUserLon()) - dlon)/cellSizeLon);
+            result[lnumber][dnumber] = (result[lnumber][dnumber] * number[lnumber][dnumber] + item.getSpeed())/(number[lnumber][dnumber]+1);
+            number[lnumber][dnumber] = number[lnumber][dnumber]+1;
+        });
+        List<NwQualityDistributionVo> res = new ArrayList<>();
+        for(int i = 0; i < 51; i++) {
+            for(int j = 0; j < 51; j++) {
+                NwQualityDistributionVo vo = new NwQualityDistributionVo();
+                vo.setUserLat(i);
+                vo.setUserLon(j);
+                vo.setSpeed((double) (int) result[i][j] /50);
+                res.add(vo);
+            }
+        }
+
+        log.info(String.valueOf(res.size()));
+        return res;
     }
 
     @Override
@@ -41,6 +69,7 @@ public class NwQualityServiceImpl implements NwQualityService {
                     BeanUtils.copyProperties(item, vo);
                     return vo;
                 }).collect(Collectors.toList());
+        log.info(String.valueOf(result.size()));
         return result;
     }
 
@@ -53,6 +82,7 @@ public class NwQualityServiceImpl implements NwQualityService {
                     BeanUtils.copyProperties(item, vo);
                     return vo;
                 }).collect(Collectors.toList());
+        log.info(String.valueOf(result.size()));
         return result;
     }
 
@@ -65,6 +95,7 @@ public class NwQualityServiceImpl implements NwQualityService {
                     BeanUtils.copyProperties(item, vo);
                     return vo;
                 }).collect(Collectors.toList());
+        log.info(String.valueOf(result.size()));
         return result;
     }
 
@@ -77,6 +108,7 @@ public class NwQualityServiceImpl implements NwQualityService {
                     BeanUtils.copyProperties(item, vo);
                     return vo;
                 }).collect(Collectors.toList());
+        log.info(String.valueOf(result.size()));
         return result;
     }
 }

@@ -29,7 +29,6 @@ public class SignalStrengthServiceImpl implements SignalStrengthService {
     public List<SignalStrengthDistributionVo> getSignalStrengthDistribution(SSDistribution distribution) {
 
         List<SignalStrengthDistribution> appDistribution = signalStrengthMapper.getDistribution(distribution);
-        log.info(String.valueOf(appDistribution.size()));
         List<SignalStrengthDistributionVo> result = appDistribution.parallelStream()
                 .map(item -> {
                     SignalStrengthDistributionVo vo = new SignalStrengthDistributionVo();
@@ -37,13 +36,12 @@ public class SignalStrengthServiceImpl implements SignalStrengthService {
                     return vo;
                 })
                 .collect(Collectors.toList());
-        log.info("456");
+        log.info(String.valueOf(appDistribution.size()));
         return result;
     }
 
     @Override
     public List<TypicalSSTrackingVo> getTypicalSignalStrengthTracking(SSTrackingDTO ssTrackingDTO) {
-
 
         List<TypicalSignalStrengthTracking> Tracking = signalStrengthMapper.getTracking(ssTrackingDTO);
         List<TypicalSSTrackingVo> result = Tracking.parallelStream()
@@ -66,6 +64,7 @@ public class SignalStrengthServiceImpl implements SignalStrengthService {
                     BeanUtils.copyProperties(item, vo);
                     return vo;
                         }).collect(Collectors.toList());
+        log.info(String.valueOf(result.size()));
         return result;
     }
 }

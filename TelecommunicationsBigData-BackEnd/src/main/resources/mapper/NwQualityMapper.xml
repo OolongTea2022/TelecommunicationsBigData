@@ -234,8 +234,15 @@
             </choose>
             <if test="startDate != null and startDate != 0">AND DAYTIME &gt; #{startDate} </if>
             <if test="endDate != null and endDate != 0">AND DAYTIME &lt; #{endDate}</if>
+            <if test="llat != null">AND GpsLat >= #{llat}</if>
+            <if test="rlat != null">AND GPSLAT &lt;= #{rlat}</if>
+            <if test="dlon != null">AND GPSLON >= #{dlon}</if>
+            <if test="ulon != null">AND GPSLON &lt;= #{ulon}</if>
         </where>
         GROUP BY
+            USERLON,
+            USERLAT
+        ORDER BY
             USERLON,
             USERLAT
     </select>
