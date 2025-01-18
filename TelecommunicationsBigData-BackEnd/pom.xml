@@ -81,11 +81,6 @@
             <artifactId>springfox-boot-starter</artifactId>
             <version>3.0.0</version>
         </dependency>
-        <dependency>
-            <groupId>org.projectlombok</groupId>
-            <artifactId>lombok</artifactId>
-            <scope>provided</scope>
-        </dependency>
 
     </dependencies>
     <dependencyManagement>
@@ -120,6 +115,14 @@
                     <mainClass>com.bigdata.TelecommunicationsBigDataBackEndApplication</mainClass>
                     <skip>true</skip>
                 </configuration>
+                <executions>
+                    <execution>
+                        <id>repackage</id>
+                        <goals>
+                            <goal>repackage</goal>
+                        </goals>
+                    </execution>
+                </executions>
             </plugin>
         </plugins>
     </build>
