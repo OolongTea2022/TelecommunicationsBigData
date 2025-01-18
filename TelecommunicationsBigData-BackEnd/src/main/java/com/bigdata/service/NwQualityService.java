@@ -1,7 +1,7 @@
 package com.bigdata.service;
 
-import com.bigdata.vo.NetworkQuality.*;
-import com.bigdata.dto.nwQuality.*;
+import com.bigdata.model.dto.nwQuality.*;
+import com.bigdata.model.vo.NetworkQuality.*;
 
 import java.util.List;
 

@@ -1,10 +1,10 @@
 package com.bigdata.service.impl;
 
-import com.bigdata.vo.DataLinks.DistributionVo;
-import com.bigdata.vo.DataLinks.StatisticsVo;
+import com.bigdata.model.vo.DataLinks.DistributionVo;
+import com.bigdata.model.vo.DataLinks.StatisticsVo;
 import com.bigdata.dao.DataLinksMapper;
-import com.bigdata.dto.DataLinks.DistributionDTO;
-import com.bigdata.dto.DataLinks.StatisticsDTO;
+import com.bigdata.model.dto.DataLinks.DistributionDTO;
+import com.bigdata.model.dto.DataLinks.StatisticsDTO;
 import com.bigdata.model.entity.DataLinks.DataLinkStatistics;
 import com.bigdata.model.entity.DataLinks.DataLinksDistribution;
 import com.bigdata.service.DataLinksService;

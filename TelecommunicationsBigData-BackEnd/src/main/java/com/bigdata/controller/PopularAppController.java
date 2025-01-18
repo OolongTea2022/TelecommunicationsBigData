@@ -1,7 +1,7 @@
 package com.bigdata.controller;
 
-import com.bigdata.vo.PopularApp.*;
-import com.bigdata.dto.PopularApp.*;
+import com.bigdata.model.dto.PopularApp.*;
+import com.bigdata.model.vo.PopularApp.*;
 import com.bigdata.result.Result;
 import com.bigdata.service.PopularAppService;
 import lombok.extern.slf4j.Slf4j;

@@ -1,8 +1,8 @@
 package com.bigdata.service.impl;
 
-import com.bigdata.vo.NetworkQuality.*;
+import com.bigdata.model.dto.nwQuality.*;
+import com.bigdata.model.vo.NetworkQuality.*;
 import com.bigdata.dao.NwQualityMapper;
-import com.bigdata.dto.nwQuality.*;
 import com.bigdata.model.entity.NetworkQuality.*;
 import com.bigdata.service.NwQualityService;
 import org.springframework.beans.BeanUtils;

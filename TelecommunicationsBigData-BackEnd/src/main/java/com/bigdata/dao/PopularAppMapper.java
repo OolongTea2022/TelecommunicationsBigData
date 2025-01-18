@@ -1,6 +1,6 @@
 package com.bigdata.dao;
 
-import com.bigdata.dto.PopularApp.*;
+import com.bigdata.model.dto.PopularApp.*;
 import com.bigdata.model.entity.PopularApp.*;
 import org.apache.ibatis.annotations.Mapper;
 

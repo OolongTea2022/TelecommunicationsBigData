@@ -1,7 +1,7 @@
 package com.bigdata.controller;
 
-import com.bigdata.vo.NetworkQuality.*;
-import com.bigdata.dto.nwQuality.*;
+import com.bigdata.model.dto.nwQuality.*;
+import com.bigdata.model.vo.NetworkQuality.*;
 import com.bigdata.result.Result;
 import com.bigdata.service.NwQualityService;
 import lombok.extern.slf4j.Slf4j;

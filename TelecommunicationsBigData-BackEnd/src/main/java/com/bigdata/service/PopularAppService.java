@@ -1,7 +1,7 @@
 package com.bigdata.service;
 
-import com.bigdata.vo.PopularApp.*;
-import com.bigdata.dto.PopularApp.*;
+import com.bigdata.model.dto.PopularApp.*;
+import com.bigdata.model.vo.PopularApp.*;
 
 import java.util.List;
 

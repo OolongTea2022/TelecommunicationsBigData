@@ -1,6 +1,6 @@
 package com.bigdata.dao;
 
-import com.bigdata.dto.nwQuality.*;
+import com.bigdata.model.dto.nwQuality.*;
 import com.bigdata.model.entity.NetworkQuality.*;
 import org.apache.ibatis.annotations.Mapper;
 

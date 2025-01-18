@@ -1,8 +1,8 @@
 package com.bigdata.dao;
 
-import com.bigdata.dto.SignalStrength.SSDistribution;
-import com.bigdata.dto.SignalStrength.SSStatisticsDTO;
-import com.bigdata.dto.SignalStrength.SSTrackingDTO;
+import com.bigdata.model.dto.SignalStrength.SSDistribution;
+import com.bigdata.model.dto.SignalStrength.SSStatisticsDTO;
+import com.bigdata.model.dto.SignalStrength.SSTrackingDTO;
 import com.bigdata.model.entity.SignalCoverage.SignalStrengthDistribution;
 import com.bigdata.model.entity.SignalCoverage.TypicalSignalStrengthStatistics;
 import com.bigdata.model.entity.SignalCoverage.TypicalSignalStrengthTracking;

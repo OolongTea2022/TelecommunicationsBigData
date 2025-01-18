@@ -1,9 +1,9 @@
 package com.bigdata.service.impl;
 
 
-import com.bigdata.vo.PopularApp.*;
+import com.bigdata.model.dto.PopularApp.*;
+import com.bigdata.model.vo.PopularApp.*;
 import com.bigdata.dao.PopularAppMapper;
-import com.bigdata.dto.PopularApp.*;
 import com.bigdata.model.entity.PopularApp.*;
 import com.bigdata.service.PopularAppService;
 import lombok.extern.slf4j.Slf4j;

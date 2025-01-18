@@ -1,9 +1,9 @@
 package com.bigdata.controller;
 
-import com.bigdata.vo.DataLinks.DistributionVo;
-import com.bigdata.vo.DataLinks.StatisticsVo;
-import com.bigdata.dto.DataLinks.DistributionDTO;
-import com.bigdata.dto.DataLinks.StatisticsDTO;
+import com.bigdata.model.vo.DataLinks.DistributionVo;
+import com.bigdata.model.vo.DataLinks.StatisticsVo;
+import com.bigdata.model.dto.DataLinks.DistributionDTO;
+import com.bigdata.model.dto.DataLinks.StatisticsDTO;
 import com.bigdata.result.Result;
 import com.bigdata.service.DataLinksService;
 import lombok.extern.slf4j.Slf4j;
