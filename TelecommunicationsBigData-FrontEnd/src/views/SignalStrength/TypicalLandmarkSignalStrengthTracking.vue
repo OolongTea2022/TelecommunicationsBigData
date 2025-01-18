@@ -2,7 +2,7 @@
     <el-form :inline="true" :model="formInline" class="demo-form-inline">
         <el-form-item label="地标">
       <el-select
-        v-model="formInline.region"
+        v-model="formData.landmark"
         placeholder=" "
         clearable
       >
@@ -13,7 +13,7 @@
     </el-form-item>
     <el-form-item label="网络制式">
       <el-select
-        v-model="formInline.network"
+        v-model="formData.nwType"
         placeholder=" "
         clearable
       >
@@ -24,7 +24,7 @@
     </el-form-item>
     <el-form-item label="时间粒度">
       <el-select
-        v-model="formInline.time"
+        v-model="formData.timeGranularity"
         placeholder=" "
         clearable
       >
@@ -39,10 +39,12 @@
             <div class="block">
             <span class="demonstration" style="margin-right: 10px;">时间范围</span>
             <el-date-picker
-                v-model="value2"
+                v-model="formData.Date"
                 type="daterange"
                 start-placeholder="开始日期"
                 end-placeholder="结束日期"
+                format="YYYY/MM/DD/HH"
+                value-format="YYYYMMDDHH"
                 :default-value="[new Date(2010, 9, 1), new Date(2010, 10, 1)]"
             />
             </div>
@@ -51,7 +53,7 @@
     </el-form-item>
 
     <el-form-item>
-      <el-button type="primary" @click="onSubmit">Query</el-button>
+      <el-button type="primary" @click="handleSearch">Query</el-button>
     </el-form-item>
   </el-form>
     <div id="typicalLandmarkSignalStrengthTracking" style="background-color: #FFFFFF; height: 95%; width:95%; margin:.1rem; position: relative;"></div>
@@ -61,12 +63,34 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import { ref } from 'vue';
 
-const value1 = ref('')
-const value2 = ref('')
+
 import * as echarts from 'echarts';
 import { onMounted } from "vue";
+
+import { getTypicalSignalStrengthTracking } from '../../api/signal_strength';
+
+
+const cmcc_data = ref([-30, -60, -90, -120, -90, -60, -30, 0, -30, -60, -90, -120, -90, -60, -30, 0, -30, -60, -90, -120, -90, -60, -30, 0, -30, -60, -90, -120, -90, -60
+                ])
+const cucc_data = ref( [
+                    -20, -50, -80, -110, -80, -50, -20, 0, -20, -50, -80, -110, -80, -50, -20, 0, -20, -50, -80, -110, -80, -50, -20, 0, -20, -50, -80, -110, -80, -50
+                ])
+
+const ctcc_data = ref([
+                    -40, -70, -100, -110, -70, -40, -10, 0, -40, -70, -100, -110, -70, -40, -10, 0, -40, -70, -100, -110, -70, -40, -10, 0, -40, -70, -100, -110, -70, -40
+                ])
+
+const formData = ref({
+    landmark:'',
+    nwType:'',
+    timeGranularity:'',
+    Date:[],
+
+})
+
+const points = ref([]); // 新增响应式变量用于存储筛选后的数据
 
 function showImg() {
     const myChart = echarts.init(document.getElementById('typicalLandmarkSignalStrengthTracking'));
@@ -166,9 +190,7 @@ function showImg() {
                     width: '90%',
                     height: '80%'
                 },
-                data: [
-                    -30, -60, -90, -120, -90, -60, -30, 0, -30, -60, -90, -120, -90, -60, -30, 0, -30, -60, -90, -120, -90, -60, -30, 0, -30, -60, -90, -120, -90, -60
-                ],
+                data:cmcc_data.value,
                 markLine: {
                     symbol: 'none', // 去掉箭头
                     symbolSize: [0, 0], // 去掉箭头尺寸
@@ -200,9 +222,7 @@ function showImg() {
                     width: '90%',
                     height: '80%'
                 },
-                data: [
-                    -20, -50, -80, -110, -80, -50, -20, 0, -20, -50, -80, -110, -80, -50, -20, 0, -20, -50, -80, -110, -80, -50, -20, 0, -20, -50, -80, -110, -80, -50
-                ],
+                data:cucc_data.value,
                 markLine: {
                     symbol: 'none', // 去掉箭头
                     symbolSize: [0, 0], // 去掉箭头尺寸
@@ -234,9 +254,7 @@ function showImg() {
                     width: '90%',
                     height: '80%'
                 },
-                data: [
-                    -40, -70, -100, -110, -70, -40, -10, 0, -40, -70, -100, -110, -70, -40, -10, 0, -40, -70, -100, -110, -70, -40, -10, 0, -40, -70, -100, -110, -70, -40
-                ],
+                data: ctcc_data.value,
                 markLine: {
                     symbol: 'none', // 去掉箭头
                     symbolSize: [0, 0], // 去掉箭头尺寸
@@ -277,17 +295,67 @@ onMounted(() => {
 })
 
 
-import { reactive } from 'vue'
+const handleSearch = async () => {
+    // const params = {
+    //     landmark: formData.value.landmark,
+    //     timeGranularity: formData.value.timeGranularity,
+    //     nwType: formData.value.nwType,
+    //     startDate: formData.value.Date[0],
+    //     endDate: formData.value.Date[1]
+    // };
 
-const formInline = reactive({
-  user: '',
-  region: '',
-  date: '',
-})
+    const params = {};
 
-const onSubmit = () => {
-  console.log('submit!')
-}
+    console.log("发送前", params);
+    const res = await getTypicalSignalStrengthTracking(params);
+    console.log("接受", res);
+
+    if (res.data.code == '200') {
+        // 筛选出 networkName 为 'CMCC', 'CUCC', 'CTCC' 的数据
+        const filteredData = res.data.data.filter(item => 
+            ['CMCC', 'CUCC', 'CTCC'].includes(item.networkName)
+        ).slice(0, 30); // 取前30个数据
+
+        // 更新 points 变量
+        points.value = filteredData.map(item => ({
+            rssi: item.rssi,
+            networkName: item.networkName,
+            xrate: item.xrate
+        }));
+
+        // 更新 ECharts 数据
+        const seriesData = {
+            CMCC: filteredData.filter(item => item.networkName === 'CMCC').map(item => item.rssi),
+            CUCC: filteredData.filter(item => item.networkName === 'CUCC').map(item => item.rssi),
+            CTCC: filteredData.filter(item => item.networkName === 'CTCC').map(item => item.rssi),
+        };
+
+        //TODO并未完成对横坐标的统一！！！
+        cmcc_data.value = seriesData.CMCC
+        cucc_data.value = seriesData.CUCC
+        ctcc_data.value = seriesData.CTCC
+
+        console.log(cmcc_data.value);
+
+        console.log(cucc_data.value);
+        
+        console.log(ctcc_data.value);
+
+        // 更新 ECharts 图表数据
+        // myChart.setOption({
+        //     series: [
+        //         { data: seriesData.CMCC },
+        //         { data: seriesData.CUCC },
+        //         { data: seriesData.CTCC }
+        //     ]
+        // });
+
+        showImg();
+    } else {
+        console.error("获取出错记录失败", res.message);
+    }
+};
+
 </script>
 
 <style lang="css">
