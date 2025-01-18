@@ -116,12 +116,11 @@
 
 <script setup>
 
-    import * as echarts from 'echarts';
-    import 'echarts/extension/bmap/bmap';
-    import { onMounted , ref } from 'vue';
-    import { getDistribution } from '../../api/network_quality'
-    import { CaretLeft, CaretRight } from '@element-plus/icons-vue'
-    import { formToJSON } from 'axios';
+    import { CaretLeft, CaretRight } from '@element-plus/icons-vue';
+import * as echarts from 'echarts';
+import 'echarts/extension/bmap/bmap';
+import { onMounted, ref } from 'vue';
+import { getDistribution } from '../../api/network_quality';
 
 
     const formData = ref({
@@ -163,7 +162,7 @@
             data.value = res.data.data.map(item => [
                 parseInt(item.userLat),
                 parseInt(item.userLon),
-                parseInt(item.speed),
+                (parseInt(item.speed)>5?5:parseInt(item.speed)),
                 // parseFloat(item.userLon), // 经度
                 // parseFloat(item.userLat), // 纬度
                 // 1 // 固定值
