@@ -3,7 +3,7 @@
 
 <mapper namespace="com.bigdata.dao.NwQualityMapper">
 
-    <select id="getStatistics" resultType="com.bigdata.model.entity.NetworkQuality.NwQualityStatistics">
+     <select id="getStatistics" resultType="com.bigdata.model.entity.NetworkQuality.NwQualityStatistics">
         SELECT
         NWOPERATOR,
         NWTYPE,
@@ -29,7 +29,8 @@
                     AND NWOPERATOR  IN ('CMCC', 'CUCC', 'CTCC')
                 </when>
                 <otherwise>
-                    <if test="nwOperator != null">AND NWOPERATOR = #{nwOperator}</if>
+                    AND NWOPERATOR  IN ('CMCC', 'CUCC', 'CTCC')
+                    <if test="nwOperator != null"> AND NWOPERATOR = #{nwOperator}</if>
                 </otherwise>
             </choose>
             <choose>
@@ -37,6 +38,7 @@
                     AND NWTYPE IN ('2G', '3G', '4G','WIFI')
                 </when>
                 <otherwise>
+                    AND NWTYPE IN ('2G', '3G', '4G','WIFI')
                     <if test="nwType != null"> AND NWTYPE = #{nwType}</if>
                 </otherwise>
             </choose>
@@ -46,7 +48,7 @@
         GROUP BY
             NWOPERATOR, NWTYPE
         ORDER BY
-            NWOPERATOR, NWTYPE
+            SPEED DESC
     </select>
 
     <select id="getRanks" resultType="com.bigdata.model.entity.NetworkQuality.NwSpeedRank">
