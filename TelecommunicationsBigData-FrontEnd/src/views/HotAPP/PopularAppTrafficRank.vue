@@ -1,184 +1,168 @@
 <template lang="html">
+  <div>
     <el-form :inline="true" :model="formInline" class="demo-form-inline">
-  
-  <el-form-item label="Activity zone">
-    <el-select
-      v-model="formInline.region"
-      placeholder="Activity zone"
-      clearable
+      <el-form-item label="Activity zone">
+        <el-select
+          v-model="formInline.region"
+          placeholder="Activity zone"
+          clearable
+        >
+          <el-option label="Zone one" value="shanghai" />
+          <el-option label="Zone two" value="beijing" />
+        </el-select>
+      </el-form-item>
+      <el-form-item label="运营商">
+        <el-select
+          v-model="formInline.region"
+          placeholder="运营商"
+          clearable
+        >
+          <el-option label="CMCC" value="CMCC" />
+          <el-option label="CUCC" value="CUCC" />
+          <el-option label="CTCC" value="CTCC" />
+        </el-select>
+      </el-form-item>
+      <el-form-item>
+        <el-button type="primary" @click="onSubmit">Query</el-button>
+      </el-form-item>
+    </el-form>
+    <div class="demo-date-picker">
+      <div class="block">
+        <span class="demonstration">时间范围</span>
+        <el-date-picker
+          v-model="value2"
+          type="daterange"
+          start-placeholder="Start Date"
+          end-placeholder="End Date"
+          :default-value="[new Date(2010, 9, 1), new Date(2010, 10, 1)]"
+        />
+      </div>
+    </div>
+    <div
+      id="PopularMobileNetworkQualityRank"
+      style="background-color: #FFFFFF; height: 400px; width: 100%; margin:.1rem; position: relative;"
     >
-      <el-option label="Zone one" value="shanghai" />
-      <el-option label="Zone two" value="beijing" />
-    </el-select>
-  </el-form-item>
-  <el-form-item label="Activity zone">
-    <el-select
-      v-model="formInline.region"
-      placeholder="Activity zone"
-      clearable
+      <div style="position: absolute; top: 0; left: 0; font-size: 12px; color: black;">网络数据对比</div>
+    </div>
+    <div
+      id="PieChart"
+      style="background-color: #FFFFFF; height: 400px; width: 100%; margin:.1rem; position: relative;"
     >
-      <el-option label="Zone one" value="shanghai" />
-      <el-option label="Zone two" value="beijing" />
-    </el-select>
-  </el-form-item>
-  
-  <el-form-item>
-    <el-button type="primary" @click="onSubmit">Query</el-button>
-  </el-form-item>
-</el-form>
-<div class="demo-date-picker">
-  <div class="block">
-    <span class="demonstration">daterange</span>
-    <el-date-picker
-      v-model="value2"
-      type="daterange"
-      start-placeholder="Start Date"
-      end-placeholder="End Date"
-      :default-value="[new Date(2010, 9, 1), new Date(2010, 10, 1)]"
-    />
-  </div>
-</div>
-  <div id="PopularMobileNetworkQualityRank" style="background-color: #FFFFFF; height: 95%; width:95%; margin:.1rem; position: relative;">
-      <div style="position: absolute; top: 0; left: 0; font-size: 12px; color: black;">典型地标网络质量跟踪图</div>
+      <div style="position: absolute; top: 0; left: 0; font-size: 12px; color: black;">ALL占比</div>
+    </div>
   </div>
 </template>
 
 <script setup>
 import * as echarts from 'echarts';
-import { onMounted } from "vue";
+import { onMounted, reactive, ref } from 'vue';
 
+// 初始化图表并展示数据
 function showImg() {
   const myChart = echarts.init(document.getElementById('PopularMobileNetworkQualityRank'));
-  const builderJson = {
-      all: 10887,
-      charts: {
-          bar: 7561,
-          line: 7778,
-          pie: 7355
-      }
-  };
-  const downloadJson = {
-      'echarts.min.js': 17365,
-      'echarts.js': 14890
-  };
+  const pieChart = echarts.init(document.getElementById('PieChart'));
 
-  // 假设我们根据下载量和图表类型数量的某种关联逻辑来计算新的数据
-  const relatedData = {};
-  const chartKeys = Object.keys(builderJson.charts);
-  const downloadKeys = Object.keys(downloadJson);
-  let totalDownloads = 0;
-  for (let key of downloadKeys) {
-      totalDownloads += downloadJson[key];
-  }
-  for (let key of chartKeys) {
-      relatedData[key] = (builderJson.charts[key] / totalDownloads) * 100;
-  }
+  // 示例数据源，支持任意多个数据项
+  const datasetSource = [
+    { name: 'Matcha Latte', all: 90 },  
+    { name: 'Milk Tea', all: 150 },    
+    { name: 'Cheese Cocoa', all: 95 },
+    { name: 'Walnut Brownie', all: 55 },
+    { name: 'Walnut Brodawnie', all: 355 },
+    { name: 'Walnut Brodfdfawnie', all: 315 },
+    { name: 'Test Item 1', all: 200 },  // 新增数据项
+    { name: 'Test Item 2', all: 150 },  // 新增数据项
+    // 可以继续添加数据项
+  ];
+
+  // 按照 ALL 数据进行排序，降序排列
+  const datasetWithSortedAll = datasetSource.sort((a, b) => b.all - a.all);
+
+  // 获取前5个数据
+  const top5Data = datasetWithSortedAll.slice(0, 5);
 
   const option = {
-      backgroundColor: '#FFFFFF',
-      tooltip: {},
-      title: [
-          {
-              text: '在线构建图表类型统计',
-              subtext: '总计'+ builderJson.all,
-              left: '10%',
-              textAlign: 'center'
-          },
-          {
-              text: '图表类型占下载量的比例',
-              left: '60%',
-              textAlign: 'center'
-          }
-      ],
-      grid: [
-          {
-              top: 50,
-              width: '50%',
-              bottom: 50,
-              left: 10,
-              containLabel: true
-          },
-          {
-              top: 50,
-              width: '30%',
-              bottom: 50,
-              left: '60%',
-              containLabel: true
-          }
-      ],
-      xAxis: [
-          {
-              type: 'category',
-              data: chartKeys,
-              axisLabel: {
-                  interval: 0,
-                  rotate: 0
-              },
-              splitLine: {
-                  show: false
-              }
-          }
-      ],
-      yAxis: [
-          {
-              type: 'value',
-              splitLine: {
-                  show: false
-              }
-          }
-      ],
-      series: [
-          {
-              type: 'bar',
-              stack: 'chart',
-              z: 3,
-              label: {
-                  position: 'top',
-                  show: true
-              },
-              data: chartKeys.map(key => relatedData[key] || 0)
-          },
-          {
-              type: 'pie',
-              radius: '40%',
-              center: ['80%', '50%'],
-              data: chartKeys.map(key => ({
-                  name: key,
-                  value: relatedData[key] || 0
-              }))
-          }
-      ]
+    dataset: [
+      {
+        dimensions: ['name', 'all'],
+        source: top5Data.map(item => [item.name, item.all]),  // 使用前5个数据
+      },
+    ],
+    xAxis: {
+      type: 'category',
+      axisLabel: { interval: 0, rotate: 30 }
+    },
+    yAxis: {},
+    series: {
+      type: 'bar',
+      encode: { x: 'name', y: 'all' },
+    }
   };
+
+  // 设置柱状图选项
   myChart.setOption(option);
+
+  // 准备饼状图数据，使用柱状图的前5个数据
+  const pieData = top5Data.map(item => ({
+    name: item.name,
+    value: item.all, // 使用 ALL 作为饼图数据
+  }));
+
+  const pieOption = {
+    series: [
+      {
+        name: 'ALL占比',
+        type: 'pie',
+        radius: '55%',
+        center: ['50%', '50%'],
+        data: pieData,
+        emphasis: {
+          itemStyle: {
+            shadowBlur: 10,
+            shadowOffsetX: 0,
+            shadowColor: 'rgba(0, 0, 0, 0.5)',
+          },
+        },
+      },
+    ],
+  };
+
+  // 设置饼状图的选项
+  pieChart.setOption(pieOption);
 }
 
+// 在页面加载后渲染图表
 onMounted(() => {
   showImg();
-})
-
-import { reactive } from 'vue'
+});
 
 const formInline = reactive({
-user: '',
-region: '',
-date: '',
-})
+  user: '',
+  region: '',
+  date: '',
+});
 
 const onSubmit = () => {
-console.log('submit!')
-}
-import { ref } from 'vue'
+  console.log('submit!');
+};
 
-const value1 = ref('')
-const value2 = ref('')
+const value1 = ref('');
+const value2 = ref('');
 </script>
 
 <style lang="css">
-.demo-form-inline .el-input {
---el-input-width: 220px;
+.demo-form-inline.el-input {
+  --el-input-width: 220px;
 }
 
-.demo-form-inline .el-select {
---el-select-width: 220px;
+.demo-form-inline.el-select {
+  --el-input-width: 220px;
+}
+
+/* 为了让图表并排显示，使用flex布局 */
+.charts-container {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
 }
 </style>
