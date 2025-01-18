@@ -31,7 +31,6 @@
             <if test = "endDate != 0">AND TIME_INDEX_CLIENT &lt; #{endDate}</if>
         </where>
         GROUP BY NETWORK_NAME, NETWORK_TYPE
-        LIMIT 10
     </select>
 
 </mapper>

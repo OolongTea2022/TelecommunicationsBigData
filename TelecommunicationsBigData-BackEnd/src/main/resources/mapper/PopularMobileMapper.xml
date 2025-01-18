@@ -34,7 +34,6 @@
         <if test="dto.startTime != null and dto.endTime != null">
             AND start_time &gt;= #{dto.startTime} AND end_time &lt;= #{dto.endTime}
         </if>
-        LIMIT 10
     </select>
 
     <select id="getPopularMobileQualityRankRank" resultType="com.bigdata.model.entity.PopularMobile.PopularMobileQualityRank">
@@ -73,7 +72,6 @@
             nwoperator
         ORDER BY
             speed DESC
-            LIMIT 20
     </select>
 
 
@@ -116,7 +114,6 @@
             network_type
         ORDER BY
             speed DESC
-        LIMIT 15
     </select>
 
 
@@ -157,7 +154,6 @@
             os_andversion
         ORDER BY
             speed DESC
-        LIMIT 15
     </select>
 
 
