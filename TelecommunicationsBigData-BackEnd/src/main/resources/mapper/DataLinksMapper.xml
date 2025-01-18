@@ -8,10 +8,18 @@
         <where>
             <if test="userLat != 0">AND USER_LAT = #{userLat}</if>
             <if test="userLon != 0">AND USER_LON = #{userLon} </if>
-            <if test="networkName != null">AND NETWORK_NAME = #{networkName} </if>
-            <if test="mobileNetworkType != null">AND MOBILE_NETWORK_TYPE =  #{mobileNetworkType}</if>
+            <if test="nwOperator != null">AND NETWORK_NAME = #{nwOperator} </if>
+            <choose>
+                <when test="networkType == 'ALL'">
+                    NETWORK_TYPE IN ('2G', '3G', '4G','WIFI')
+                </when>
+                <otherwise>
+                    <if test="nwType != null">NETWORK_TYPE = #{nwType}</if>
+                </otherwise>
+            </choose>
+            <if test = "startDate != 0">AND TIME_INDEX_CLIENT &gt; #{startDate} </if>
+            <if test = "endDate != 0">AND TIME_INDEX_CLIENT &lt; #{endDate}</if>
         </where>
-        LIMIT 10
     </select>
 
     <select id="getDataLinkStatistics" resultType="com.bigdata.model.entity.DataLinks.DataLinkStatistics">
@@ -19,7 +27,8 @@
         FROM DATACONNECTION
         <where>
             <if test="networkName != null">AND NETWORK_NAME =  #{networkName}</if>
-            <if test="networkType != null">AND NETWORK_TYPE =  #{networkType}</if>
+            <if test = "startDate != 0">AND TIME_INDEX_CLIENT &gt; #{startDate} </if>
+            <if test = "endDate != 0">AND TIME_INDEX_CLIENT &lt; #{endDate}</if>
         </where>
         GROUP BY NETWORK_NAME, NETWORK_TYPE
         LIMIT 10

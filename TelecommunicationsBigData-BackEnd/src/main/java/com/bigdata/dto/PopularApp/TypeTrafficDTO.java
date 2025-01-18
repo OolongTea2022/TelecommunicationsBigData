@@ -2,7 +2,10 @@ package com.bigdata.dto.PopularApp;
 import lombok.Data;
 @Data
 public class TypeTrafficDTO {
-    private double speed;
-    private String appName;
-    private String networkType;
+    private double heat;
+    private String landmark;
+    private String nwType;
+    private String nwOperator;
+    private long startDate;
+    private long endDate;
 }

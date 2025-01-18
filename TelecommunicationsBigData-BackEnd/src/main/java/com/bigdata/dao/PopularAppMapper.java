@@ -17,7 +17,7 @@ public interface PopularAppMapper
 
     List<PopularAppTrafficTracking> getTrafficTracking(TrafficTrackingDTO trafficTrackingDTO);
 
-    List<PopularAppUserDIstribution> getUserDIstribution(UserDistributionDTO userDistributionDTO);
+    List<PopularAppUserDistribution> getUserDIstribution(UserDistributionDTO userDistributionDTO);
 
     List<TypicalLandmarkAppTrafficRank> getTypicalLandmarkAppTrafficRank(TypeTrafficDTO typeTrafficDTO);
 }

@@ -19,10 +19,10 @@
             </choose>
             <choose>
                 <when test="nwType == 'ALL'">
-                    AND NWTYPE IN ('2G', '3G', '4G')
+                    AND NETWORK_TYPE IN ('2G', '3G', '4G','WIFI')
                 </when>
                 <otherwise>
-                    <if test="nwType != null"> AND NWTYPE = #{nwType}</if>
+                    <if test="nwType != null"> AND NETWORK_TYPE = #{nwType}</if>
                 </otherwise>
             </choose>
             <if test = "startDate != 0">AND TIME_INDEX &gt; #{startDate} </if>
@@ -54,7 +54,7 @@
             <if test = "landmark != null">AND LANDMARK = #{landmark}</if>
             <choose>
                 <when test="networkType == 'ALL'">
-                    NETWORK_TYPE IN ('2G', '3G', '4G')
+                    NETWORK_TYPE IN ('2G', '3G', '4G','WIFI')
                 </when>
                 <otherwise>
                     <if test="networkType != null">NETWORK_TYPE = #{networkType}</if>
