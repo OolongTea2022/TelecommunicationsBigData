@@ -2,7 +2,7 @@
 <el-form :inline="true" :model="formInline" class="demo-form-inline">
     <el-form-item label="运营商">
     <el-select
-        v-model="formInline.region"
+        v-model="formData.nwOperator"
         placeholder=" "
         clearable
     >
@@ -18,11 +18,13 @@
             <div class="block">
                 <span class="demonstration" style="margin-right: 10px;">时间范围</span>
                 <el-date-picker
-                v-model="value2"
+                v-model="formData.Date"
                 type="daterange"
                 start-placeholder="开始日期"
                 end-placeholder="结束日期"
-                :default-value="[new Date(2010, 9, 1), new Date(2010, 10, 1)]"
+                format="YYYY/MM/DD/HH"
+                value-format="YYYYMMDDHH"
+                :default-value="[new Date(2010, 9, 1), new Date(2020, 10, 1)]"
                 />
             </div>
         </div>
@@ -37,7 +39,7 @@
 
 
 <div id="TypicalLandmarkSignalStrengthStatistics" style="background-color: #FFFFFF; height: 95%; width:95%; margin:.1rem; position: relative;">
-        <!-- <div style="position: absolute; top: 0; left: 0; font-size: 12px; color: black;">网络速率(下行)</div> -->
+
     
 
 </div>
@@ -47,6 +49,10 @@
 <script setup>
 import * as echarts from 'echarts';
 import { onMounted } from "vue";
+import { getTypicalSignalStrengthTrackingByLandmark } from '../../api/signal_strength'
+var a = 0;
+var b = 0;
+var c = 0;
 
 function showImg() {
     const myChart = echarts.init(document.getElementById('TypicalLandmarkSignalStrengthStatistics'));
@@ -56,9 +62,9 @@ function showImg() {
         dataset: {
             source: [
                 ['product', '4G', '3G', '2G'],
-                ['商业区', -100,-200,-300],
-                ['大学', -100,-200,-300],
-                ['其它', -100,-200,-300]
+                ['商业区', a,b,c],
+                
+                
             ]
         },
         xAxis: {
@@ -88,15 +94,39 @@ onMounted(() => {
 })
 import { reactive } from 'vue'
 
-const formInline = reactive({
-    user: '',
-    region: '',
-    date: '',
+const formData = reactive({
+    nwOperator: '',
+    Date:[],
 })
 
-const onSubmit = () => {
-console.log('submit!')
-}
+const onSubmit = async () => {
+        const params = {
+            nwOperator: formData.nwOperator,
+            startDate: formData.Date[0],
+            endDate: formData.Date[1],
+            // startDate: 2017070817,
+            // endDate: 2018070817
+        };
+        console.log("发送前",params);
+        // Call the searchMistakeList function to get the data
+        const res = await getTypicalSignalStrengthTrackingByLandmark(params);
+
+        console.log("接受" , res);
+
+        if (res.data.code == '200') {
+            // 提取 userLon 和 userLat 并更新 points
+            a = res.data.data[0].rssi;
+            b = res.data.data[1].rssi;
+            c = res.data.data[2].rssi;
+            // console.log(res.data.data.data[0].rssi)
+            console.log(res.data.data[0].rssi)
+            showImg();
+            
+        } else {
+            console.error("获取出错记录失败", res.message);
+        }
+    };
+
 
 </script>
 

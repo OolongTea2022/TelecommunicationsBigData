@@ -31,8 +31,8 @@ public class NwQualityServiceImpl implements NwQualityService {
         double rlat = Double.parseDouble(distributionDTO.getRlat());
         double ulon = Double.parseDouble(distributionDTO.getUlon());
         double dlon = Double.parseDouble(distributionDTO.getDlon());
-        double cellSizeLat = (rlat - llat+49)/50;
-        double cellSizeLon = (ulon - dlon+49)/50;
+        double cellSizeLat = (rlat - llat)/50;
+        double cellSizeLon = (ulon - dlon)/50;
         List<NwQualityDistribution> list = nwQualityMapper.getDistribution(distributionDTO);
         log.info(String.valueOf(list.size()));
         double[][] result = new double[51][51];
@@ -50,7 +50,7 @@ public class NwQualityServiceImpl implements NwQualityService {
                 NwQualityDistributionVo vo = new NwQualityDistributionVo();
                 vo.setUserLat(i);
                 vo.setUserLon(j);
-                vo.setSpeed((double) (int) result[i][j] /50);
+                vo.setSpeed( result[i][j] /50);
                 res.add(vo);
             }
         }
