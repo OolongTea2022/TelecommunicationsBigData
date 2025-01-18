@@ -163,6 +163,19 @@
     import { CaretLeft, CaretRight } from '@element-plus/icons-vue'
 
 
+    const points = ref([
+            [116.404, 39.915, 1],
+            [116.404, 39.9151, 1],
+            [116.404, 39.9152, 1],
+            [116.404, 39.9153, 1],
+            [116.404, 39.9154, 1],
+            [116.404, 39.9155, 1],
+            [116.404, 39.9156, 1],
+            [116.404, 39.9157, 1],
+            [116.404, 39.9158, 1],
+            [116.404, 39.9159, 10]
+        ]);
+
     const formData = ref({
         nwType:'',
         nwOperator:'',
@@ -172,30 +185,26 @@
 
     const handleSearch = async () => {
         const params = {
-            nwType:formData.value.nwType,
-            nwOperator:formData.value.nwOperator,
-            
-            startDate:formData.value.Date[0],
-            endDate:formData.value.Date[1]
+            nwType: formData.value.nwType,
+            nwOperator: formData.value.nwOperator,
+            startDate: formData.value.Date[0],
+            endDate: formData.value.Date[1]
         };
+        console.log("发送前",params);
         // Call the searchMistakeList function to get the data
         const res = await getDistribution(params);
 
-        console.log(res);
+        console.log("接受" , res);
 
         if (res.data.code == '200') {
-            //test
-            // console.log(res.data.data.rssi);
-            // console.log(res.data.data[1]);
-            // console.log(res.data.data[1].userLon);
-            
-            // console.log(res.data);
-
-
-
-
-            // totalNumber.value = res.data.data.total; // Update total number
-            // mistakeData.value = res.data.data.mistakes; // Update mistake data
+            // 提取 userLon 和 userLat 并更新 points
+            points.value = res.data.data.map(item => [
+                parseFloat(item.userLon), // 经度
+                parseFloat(item.userLat), // 纬度
+                1 // 固定值
+            ]);
+            showImg();
+            console.log("zheshi_point",points)
         } else {
             console.error("获取出错记录失败", res.message);
         }
@@ -218,18 +227,6 @@
         const chartDom = document.getElementById('main');
         const myChart = echarts.init(chartDom);
 
-        const points = ref([
-            [116.404, 39.915, 1],
-            [116.404, 39.9151, 1],
-            [116.404, 39.9152, 1],
-            [116.404, 39.9153, 1],
-            [116.404, 39.9154, 1],
-            [116.404, 39.9155, 1],
-            [116.404, 39.9156, 1],
-            [116.404, 39.9157, 1],
-            [116.404, 39.9158, 1],
-            [116.404, 39.9159, 10]
-        ]);
 
         const option = {
             animation: false,
@@ -246,7 +243,7 @@
                 seriesIndex: 0,
                 calculable: true,
                 inRange: {
-                    color: ['blue', 'blue', 'green', 'yellow', 'red', 'purple', '']
+                    color: ['blue', 'blue', 'green', 'yellow', 'red', 'purple']
                 }
             },
             series: [
@@ -255,7 +252,7 @@
                     coordinateSystem: 'bmap',
                     data: points.value,
                     pointSize: 10,
-                    blurSize: 1
+                    blurSize: 5
                 }
             ]
         }
