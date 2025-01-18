@@ -15,7 +15,6 @@
         </where>
         GROUP BY PROVINCE
         ORDER BY COUNT DESC
-        LIMIT 10
     </select>
 
 
@@ -31,7 +30,6 @@
                 AND DAYTIME BETWEEN #{dto.startTime} AND #{dto.endTime}
             </if>
         </where>
-        LIMIT 10
     </select>
 
 </mapper>

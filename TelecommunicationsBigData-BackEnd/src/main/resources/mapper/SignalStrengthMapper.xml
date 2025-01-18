@@ -29,7 +29,7 @@
             <if test = "endDate != 0">AND TIME_INDEX &lt; #{endDate}</if>
         </where>
 
-        limit 10
+        limit 10000
 
     </select>
 
