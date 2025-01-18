@@ -42,13 +42,11 @@
       id="PopularMobileNetworkQualityRank"
       style="background-color: #FFFFFF; height: 400px; width: 100%; margin:.1rem; position: relative;"
     >
-      <div style="position: absolute; top: 0; left: 0; font-size: 12px; color: black;">网络数据对比</div>
     </div>
     <div
       id="PieChart"
       style="background-color: #FFFFFF; height: 400px; width: 100%; margin:.1rem; position: relative;"
     >
-      <div style="position: absolute; top: 0; left: 0; font-size: 12px; color: black;">ALL占比</div>
     </div>
   </div>
 </template>
@@ -56,14 +54,9 @@
 <script setup>
 import * as echarts from 'echarts';
 import { onMounted, reactive, ref } from 'vue';
+import { getTrafficRank } from '../../api/hot_app';
 
-// 初始化图表并展示数据
-function showImg() {
-  const myChart = echarts.init(document.getElementById('PopularMobileNetworkQualityRank'));
-  const pieChart = echarts.init(document.getElementById('PieChart'));
-
-  // 示例数据源，支持任意多个数据项
-  const datasetSource = [
+const datasetSource = ref([
     { name: 'Matcha Latte', all: 90 },  
     { name: 'Milk Tea', all: 150 },    
     { name: 'Cheese Cocoa', all: 95 },
@@ -73,10 +66,18 @@ function showImg() {
     { name: 'Test Item 1', all: 200 },  // 新增数据项
     { name: 'Test Item 2', all: 150 },  // 新增数据项
     // 可以继续添加数据项
-  ];
+  ]);
+
+
+// 初始化图表并展示数据
+function showImg() {
+  const myChart = echarts.init(document.getElementById('PopularMobileNetworkQualityRank'));
+  const pieChart = echarts.init(document.getElementById('PieChart'));
+
+  // 示例数据源，支持任意多个数据项
 
   // 按照 ALL 数据进行排序，降序排列
-  const datasetWithSortedAll = datasetSource.sort((a, b) => b.all - a.all);
+  const datasetWithSortedAll = datasetSource.value.sort((a, b) => b.all - a.all);
 
   // 获取前5个数据
   const top5Data = datasetWithSortedAll.slice(0, 5);
@@ -142,12 +143,38 @@ const formInline = reactive({
   date: '',
 });
 
-const onSubmit = () => {
-  console.log('submit!');
+const onSubmit = async () => {
+
+//TODO偷鸡写法，传递空参数，后端写死回传数据
+const params = {};
+
+
+console.log("发送前",params);
+// Call the searchMistakeList function to get the data
+const res = await getTrafficRank(params);
+
+console.log("接受" , res);
+
+if (res.data.code == '200') {
+    // 提取 userLon 和 userLat 并更新 points
+    datasetSource.value = res.data.data.map(item => {
+      name: item.appName
+      all: item.heat
+        // parseFloat(item.userLon), // 经度
+        // parseFloat(item.userLat), // 纬度
+        // 1 // 固定值
+    });
+    showImg();
+    console.log("zheshi_point",points)
+} else {
+    console.error("获取出错记录失败", res.message);
+}
+
+
+
+
 };
 
-const value1 = ref('');
-const value2 = ref('');
 </script>
 
 <style lang="css">
