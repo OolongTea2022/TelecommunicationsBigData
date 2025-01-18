@@ -88,12 +88,20 @@
 
       </el-form-item>
 
+      <el-radio-group v-model="formData.companyModel">
+        <el-radio value="samsung GT-N7100">samsung GT-N7100</el-radio>
+        <el-radio value="samsung GT-7108">samsung GT-7108</el-radio>
+        <el-radio value="samsung SCH-I535">samsung SCH-I535</el-radio>
+        <el-radio value="ZTE N980">ZTE N980</el-radio>
+        <el-radio value="samsung SCH-N719">samsung SCH-N719</el-radio>
+      </el-radio-group>
+
       <el-form-item>
         <el-button type="primary" @click="onSubmit">Query</el-button>
       </el-form-item>
+
+
     </el-form>
-
-
 
     <div id="main" style="height: 700px; width: 80%;"></div>
   </div>
@@ -105,22 +113,64 @@
 import * as echarts from 'echarts';
 import 'echarts/extension/bmap/bmap';
 import { onMounted , ref } from 'vue';
+import { getTrafficDistribution } from '../../api/hot_phone'
+import { CaretLeft, CaretRight } from '@element-plus/icons-vue'
 
 
-const formData = ref({
+
+var points = ref([
+  [120.279955, 30.152698, 5706],
+  [120.279955, 30.152698, 5077],
+  [120.279955, 30.152698, 2619],
+  [120.279955, 30.152698, 2542],
+  [120.279955, 30.152698, 615],
+  [120.279955, 30.152698, 2542],
+  [120.279955, 30.152698, 2458],
+  [120.279958, 30.152549, 908],
+  [120.279958, 30.152549, 779],
+  [120.279958, 30.152549, 779],
+  [120.279958, 30.152549, 779],
+  [120.279958, 30.152549, 779],
+  [120.279958, 30.152549, 779],
+  [120.279958, 30.152549, 2484],
+]);
+
+var formData = ref({
+  companyModel:'',
   nwType:'',
   nwOperator:'',
   Date:[]//开始和结束日期
 })
 
 
-//TODO未编写真正的请求函数
-const onSubmit = () => {
-  console.log("此时formdata表单信息为：")
-  console.log(formData.value.Date[0]);
-  console.log(formData.value.Date[1]);
-  console.log(formData);
+const onSubmit = async () => {
+  const params = {
+    companyModel: formData.value.companyModel,
+    nwType: formData.value.nwType,
+    nwOperator: formData.value.nwOperator,
+    startDate: formData.value.Date[0],
+    endDate: formData.value.Date[1]
+  };
+  console.log("发送前",params);
+  // Call the searchMistakeList function to get the data
+  const res = await getTrafficDistribution(params);
+
+  console.log("接受" , res);
+
+  if (res.data.code == '200') {
+    // 提取 userLon 和 userLat 并更新 points
+    points.value = res.data.data.map(item => [
+      parseFloat(item.userLon), // 经度
+      parseFloat(item.userLat), // 纬度
+      1 // 固定值
+    ]);
+    showImg();
+    console.log("zheshi_point",points)
+  } else {
+    console.error("获取出错记录失败", res.message);
+  }
 }
+
 
 
 
@@ -131,39 +181,23 @@ function showImg(){
   const chartDom = document.getElementById('main');
   const myChart = echarts.init(chartDom);
 
-  const points = ref([
-    [120.279955, 30.152698, 5706],
-    [120.279955, 30.152698, 5077],
-    [120.279955, 30.152698, 2619],
-    [120.279955, 30.152698, 2542],
-    [120.279955, 30.152698, 615],
-    [120.279955, 30.152698, 2542],
-    [120.279955, 30.152698, 2458],
-    [120.279958, 30.152549, 908],
-    [120.279958, 30.152549, 779],
-    [120.279958, 30.152549, 779],
-    [120.279958, 30.152549, 779],
-    [120.279958, 30.152549, 779],
-    [120.279958, 30.152549, 779],
-    [120.279958, 30.152549, 2484],
-  ]);
 
   const option = {
     animation: false,
     bmap: {
       center: [120.27995, 30.1525],
-      zoom: 17,
+      zoom: 15,
       roam: true
     },
     visualMap: {
       show: false,
       top: 'top',
       min: 0,
-      max: 5000,
+      max: 10,
       seriesIndex: 0,
       calculable: true,
       inRange: {
-        color: ['blue', 'yellow', 'red']
+        color: ['blue', 'blue','green', 'yellow', 'red']
       }
     },
     series: [
