@@ -25,7 +25,14 @@
             NWQUALITY
         <where>
             <if test="nwOperator != null">AND NWOPERATOR = #{nwOperator}</if>
-            <if test="nwType != null">AND NWTYPE = #{nwType} </if>
+            <choose>
+                <when test="nwType == 'ALL'">
+                    AND NWTYPE IN ('2G', '3G', '4G','WIFI')
+                </when>
+                <otherwise>
+                    <if test="nwType != null"> AND NWTYPE = #{nwType}</if>
+                </otherwise>
+            </choose>
             <if test="startDate != null and startDate != 0">AND DAYTIME &gt; #{startDate} </if>
             <if test="endDate != null and endDate != 0">AND DAYTIME &lt; #{endDate}</if>
         </where>
@@ -99,7 +106,14 @@
             NWQUALITY
         <where>
             <if test="nwOperator != null ">AND NWOPERATOR = #{nwOperator}</if>
-            <if test="nwType != null">AND NWTYPE = #{nwType}</if>
+            <choose>
+                <when test="nwType == 'ALL'">
+                    AND NWTYPE IN ('2G', '3G', '4G','WIFI')
+                </when>
+                <otherwise>
+                    <if test="nwType != null"> AND NWTYPE = #{nwType}</if>
+                </otherwise>
+            </choose>
             <if test="landmark != null">AND LANDMARK = #{landmark}</if>
             <if test="startDate != null and startDate != 0">AND DAYTIME &gt; #{startDate} </if>
             <if test="endDate != null and endDate != 0">AND DAYTIME &lt; #{endDate}</if>
@@ -133,7 +147,14 @@
             NWQUALITY
         <where>
             <if test="nwOperator != null ">AND NWOPERATOR = #{nwOperator}</if>
-            <if test="nwType != null">AND NWTYPE = #{nwType}</if>
+            <choose>
+                <when test="nwType == 'ALL'">
+                    AND NWTYPE IN ('2G', '3G', '4G','WIFI')
+                </when>
+                <otherwise>
+                    <if test="nwType != null"> AND NWTYPE = #{nwType}</if>
+                </otherwise>
+            </choose>
             <if test="startDate != null and startDate != 0">AND DAYTIME &gt; #{startDate} </if>
             <if test="endDate != null and endDate != 0">AND DAYTIME &lt; #{endDate}</if>
         </where>

@@ -3,8 +3,8 @@ package com.bigdata.model.entity.PopularApp;
 import lombok.Data;
 
 @Data
-public class PopularAppTrafficTracking {
+public class PopularAppUserDistribution {
+    private String userLat;
+    private String userLon;
     private double heat;
-    private String xRate;
-    private String appName;
 }

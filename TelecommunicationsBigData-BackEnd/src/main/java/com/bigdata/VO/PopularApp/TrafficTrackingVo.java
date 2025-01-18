@@ -3,7 +3,7 @@ import lombok.Data;
 
 @Data
 public class TrafficTrackingVo {
-    private double speed;
+    private double heat;
     private String xRate;
     private String appName;
 }

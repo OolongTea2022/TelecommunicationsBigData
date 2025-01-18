@@ -10,75 +10,159 @@
             PACKAGE_NAME,
             APP_NAME
         FROM APP_TRAFFIC
+        <where>
+            <if test = "nwOperator != null">AND NETWORK_NAME = #{nwOperator}</if>
+            <choose>
+                <when test="nwType == 'ALL'">
+                    AND NETWORK_TYPE IN ('2G', '3G', '4G','WIFI')
+                </when>
+                <otherwise>
+                    <if test="nwType != null">AND NETWORK_TYPE = #{nwType}</if>
+                </otherwise>
+            </choose>
+            <if test = "startDate != 0">AND DATE &gt; #{startDate} </if>
+            <if test = "endDate != 0">AND DATE &lt; #{endDate}</if>
+            <if test="heat != 0">AND heat &gt; #{heat}</if>
+        </where>
         GROUP BY PACKAGE_NAME, APP_NAME
         ORDER BY heat DESC
-            LIMIT 5
     </select>
 
 
     <select id="getTrafficDistribution" resultType="com.bigdata.model.entity.PopularApp.PopularAppTrafficDistribution">
         SELECT
-            sum(DOWNLOAD_TRAFFIC)+ sum(UPLOAD_TRAFFIC) as heat,
-            PACKAGE_NAME,
-            APP_NAME
+        sum(DOWNLOAD_TRAFFIC)+ sum(UPLOAD_TRAFFIC) as heat,
+        PACKAGE_NAME,
+        APP_NAME
         FROM APP_TRAFFIC
+        <where>
+            <if test = "nwOperator != null">AND NETWORK_NAME = #{nwOperator}</if>
+            <choose>
+                <when test="nwType == 'ALL'">
+                    AND NETWORK_TYPE IN ('2G', '3G', '4G','WIFI')
+                </when>
+                <otherwise>
+                    <if test="nwType != null">AND NETWORK_TYPE = #{nwType}</if>
+                </otherwise>
+            </choose>
+            <if test = " appName != null">AND APP_NAME = #{appName}</if>
+            <if test = "startDate != 0">AND DATE &gt; #{startDate} </if>
+            <if test = "endDate != 0">AND DATE &lt; #{endDate}</if>
+            <if test="heat != 0">AND heat &gt; #{heat}</if>
+        </where>
         GROUP BY PACKAGE_NAME, APP_NAME
         ORDER BY heat DESC
-            LIMIT 10
     </select>
 
 
     <select id="getTrafficRank" resultType="com.bigdata.model.entity.PopularApp.PopularAppTrafficRank">
         SELECT
-            SUM(b.ULSPEED + b.DLSPEED) AS SPEED,
+            sum(DOWNLOAD_TRAFFIC)+ sum(UPLOAD_TRAFFIC) as heat,
             APP_NAME
         FROM
-            APP_TRAFFIC a
-                JOIN
-            NWquality b ON
-                a.USER_LON = b.GPSLON AND a.USER_LAT = b.GPSLAT
-        WHERE
-            a.USER_LON IS NOT NULL AND b.GPSLON IS NOT NULL AND a.USER_LAT IS NOT NULL AND b.GPSLAT IS NOT NULL
+            APP_TRAFFIC
+        <where>
+            <if test = "nwOperator != null">AND NETWORK_NAME = #{nwOperator}</if>
+            <if test = "startDate != 0">AND DATE &gt; #{startDate} </if>
+            <if test = "endDate != 0">AND DATE &lt; #{endDate}</if>
+            <if test="heat != 0">AND heat &gt; #{heat}</if>
+        </where>
         GROUP BY
-            a.APP_NAME
+            APP_NAME
         ORDER BY
-            SPEED DESC
-            LIMIT 10
+            heat DESC
     </select>
 
 
     <select id="getTrafficTracking" resultType="com.bigdata.model.entity.PopularApp.PopularAppTrafficTracking">
-
-
-    </select>
-
-
-
-    <select id="getUserDIstribution" resultType="com.bigdata.model.entity.PopularApp.PopularAppUserDIstribution">
         SELECT
-            USER_LON,
-            USER_LAT,
-            UPLOAD_TRAFFIC AS HEAT
+            sum(DOWNLOAD_TRAFFIC)+ sum(UPLOAD_TRAFFIC) as heat,
+            APP_NAME,
+        <choose>
+            <when test="timeGranularity == 'hour' ">
+                START_TIME AS x_rate
+            </when>
+            <when test="timeGranularity == 'day' ">
+                TO_CHAR(date,'#') AS x_rate
+            </when>
+            <otherwise>
+                TO_CHAR(date/100,'#') AS x_rate
+            </otherwise>
+        </choose>
         FROM
-            APP_TRAFFIC limit 5
+            APP_TRAFFIC
+        <where>
+            <if test = "nwOperator != null">AND NETWORK_NAME = #{nwOperator}</if>
+            <choose>
+                <when test="nwType == 'ALL'">
+                    AND NETWORK_TYPE IN ('2G', '3G', '4G','WIFI')
+                </when>
+                <otherwise>
+                    <if test="nwType != null">AND NETWORK_TYPE = #{nwType}</if>
+                </otherwise>
+            </choose>
+            <if test = " appName != null">AND APP_NAME = #{appName}</if>
+            <if test = "startDate != 0">AND DATE &gt; #{startDate}</if>
+            <if test = "endDate != 0">AND DATE &lt; #{endDate}</if>
+            <if test="heat != 0">AND heat &gt; #{heat}</if>
+        </where>
+        GROUP BY
+            APP_NAME,x_rate
+        order by
+            x_rate
     </select>
 
 
     <select id="getTypicalLandmarkAppTrafficRank" resultType="com.bigdata.model.entity.PopularApp.TypicalLandmarkAppTrafficRank">
         SELECT
-            SUM(nw.ulspeed + nw.ulspeed) AS speed,
-            at.app_name as app_name,
-            at.network_type as network_type
+            sum(DOWNLOAD_TRAFFIC)+ sum(UPLOAD_TRAFFIC) as heat,
+            app_name,
+            network_type
         FROM
-            app_traffic at
-INNER JOIN
-    nwquality nw ON at.user_lon = nw.gpslon AND at.user_lat = nw.gpslat
+            app_traffic
+        <where>
+            <if test = "nwOperator != null">AND NETWORK_NAME = #{nwOperator}</if>
+            <choose>
+                <when test="nwType == 'ALL'">
+                    AND NETWORK_TYPE IN ('2G', '3G', '4G','WIFI')
+                </when>
+                <otherwise>
+                    <if test="nwType != null">AND NETWORK_TYPE = #{nwType}</if>
+                </otherwise>
+            </choose>
+            <if test = " landmark != null">AND LANDMARK = #{landmark}</if>
+            <if test = "startDate != 0">AND DATE &gt; #{startDate}</if>
+            <if test = "endDate != 0">AND DATE &lt; #{endDate}</if>
+            <if test="heat != 0">AND heat &gt; #{heat}</if>
+        </where>
         GROUP BY
-            at.app_name, at.network_type
+            app_name, network_type
         ORDER BY
-            speed DESC
-            LIMIT 10
+            heat DESC
     </select>
 
+    <select id="getUserDIstribution" resultType="com.bigdata.model.entity.PopularApp.PopularAppUserDistribution">
+        SELECT
+            USER_LON,
+            USER_LAT,
+            sum(DOWNLOAD_TRAFFIC)+ sum(UPLOAD_TRAFFIC) as heat
+        FROM
+            APP_TRAFFIC
+        <where>
+            <if test = "startDate != 0">AND DATE &gt; #{startDate}</if>
+            <if test = "endDate != 0">AND DATE &lt; #{endDate}</if>
+            <choose>
+                <when test="nwType == 'ALL'">
+                    AND NETWORK_TYPE IN ('2G', '3G', '4G','WIFI')
+                </when>
+                <otherwise>
+                    <if test="nwType != null">AND NETWORK_TYPE = #{nwType}</if>
+                </otherwise>
+            </choose>
+            <if test = "nwOperator != null">AND NETWORK_NAME = #{nwOperator}</if>
+        </where>
+        GROUP BY
+            USER_LON,USER_LAT
+    </select>
 
 </mapper>

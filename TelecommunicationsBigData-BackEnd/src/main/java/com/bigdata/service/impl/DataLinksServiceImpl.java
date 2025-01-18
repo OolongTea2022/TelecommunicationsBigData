@@ -23,6 +23,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
+@Slf4j
 public class DataLinksServiceImpl implements DataLinksService {
 
     @Autowired
@@ -42,6 +43,8 @@ public class DataLinksServiceImpl implements DataLinksService {
 
     @Override
     public List<StatisticsVo> getDataLinkStatistics(StatisticsDTO statisticsDTO) {
+        log.info(String.valueOf(statisticsDTO.getStartDate()));
+        log.info(String.valueOf(statisticsDTO.getEndDate()));
         List<DataLinkStatistics> dataLinkStatistics = dataLinksMapper.getDataLinkStatistics(statisticsDTO);
         List<StatisticsVo> result = dataLinkStatistics.parallelStream()
                 .map(item->{

@@ -3,7 +3,7 @@ import lombok.Data;
 
 @Data
 public class StatisticsDTO {
-    private long Tcount;
     private String networkName;
-    private String networkType;
+    private long startDate;
+    private long endDate;
 }
