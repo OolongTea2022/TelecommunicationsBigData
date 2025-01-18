@@ -1,5 +1,16 @@
 import myAxios from "../utils/request.js";
 
+
+// getDistribution
+export const getDistribution = async (params) => {
+    const res = await myAxios.request({
+        url: "/nwQuality/Distribution",
+        method: "POST",
+        data: params,
+    });
+    return res;
+}
+
 // getRank
 export const getRank = async (params) => {
     const res = await myAxios.request({
@@ -9,7 +20,6 @@ export const getRank = async (params) => {
     });
     return res;
 }
-
 
 // getQualityStatistics
 export const getQualityStatistics = async (params) => {

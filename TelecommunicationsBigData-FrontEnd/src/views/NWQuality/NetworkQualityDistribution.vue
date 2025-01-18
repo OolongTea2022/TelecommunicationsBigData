@@ -119,15 +119,20 @@
     import * as echarts from 'echarts';
     import 'echarts/extension/bmap/bmap';
     import { onMounted , ref } from 'vue';
-    import { getDistribution } from '../../api/signal_strength'
+    import { getDistribution } from '../../api/network_quality'
     import { CaretLeft, CaretRight } from '@element-plus/icons-vue'
+    import { formToJSON } from 'axios';
 
 
     const formData = ref({
         speedType:'',
         nwType:'',
         nwOperator:'',
-        Date:[]//开始和结束日期
+        Date:[],//开始和结束日期
+        dlon: "115.9",
+        llat: "39.5",
+        rlat: "40.6",
+        ulon: "116.8"
     })
 
     //向后端请求的函数
@@ -138,10 +143,10 @@
             startDate: formData.value.Date[0],
             endDate: formData.value.Date[1],
             speedType: formData.value.speedType,
-            dlon: "29.5",
-            llat: "105.9",
-            rlat: "126.8",
-            ulon: "50.6"
+            dlon: formData.value.dlon,
+            llat: formData.value.llat,
+            rlat: formData.value.rlat,
+            ulon: formData.value.ulon
         };
         console.log("发送前",params);
         // Call the searchMistakeList function to get the data
@@ -153,15 +158,19 @@
 
         //TODO获取经纬度然后更改地图棋盘格子
         if (res.data.code == '200') {
-            // 提取 userLon 和 userLat 并更新 points
-            points.value = res.data.data.map(item => [
-                parseFloat(item.userLon), // 经度
-                parseFloat(item.userLat), // 纬度
-                1 // 固定值
+            //TODO这里可能存在方向问题
+            // 提取 userLon 和 userLat 并更新 
+            data.value = res.data.data.map(item => [
+                parseInt(item.userLat),
+                parseInt(item.userLon),
+                parseInt(item.speed),
+                // parseFloat(item.userLon), // 经度
+                // parseFloat(item.userLat), // 纬度
+                // 1 // 固定值
 
             ]);
+            console.log("这是data的值",data)
             showImg();
-            console.log("zheshi_point",points)
         } else {
             console.error("获取出错记录失败", res.message);
         }
@@ -178,7 +187,7 @@
         var COLORS = ['#070093', '#1c3fbf', '#1482e5', '#70b4eb', '#b4e0f3', '#ffffff'];
         var lngExtent = [39.5, 40.6];
         var latExtent = [115.9, 116.8];
-        var cellCount = [50, 50];
+        var cellCount = [51, 51];
         var cellSizeCoord = [
         (lngExtent[1] - lngExtent[0]) / cellCount[0],
         (latExtent[1] - latExtent[0]) / cellCount[1]
@@ -241,27 +250,27 @@
                 pieces: [
                 {
                     value: 0,
-                    color: COLORS[0]
+                    color: COLORS[5]
                 },
                 {
                     value: 1,
-                    color: COLORS[1]
-                },
-                {
-                    value: 2,
-                    color: COLORS[2]
-                },
-                {
-                    value: 3,
-                    color: COLORS[3]
-                },
-                {
-                    value: 4,
                     color: COLORS[4]
                 },
                 {
+                    value: 2,
+                    color: COLORS[3]
+                },
+                {
+                    value: 3,
+                    color: COLORS[2]
+                },
+                {
+                    value: 4,
+                    color: COLORS[1]
+                },
+                {
                     value: 5,
-                    color: COLORS[5]
+                    color: COLORS[0]
                 }
                 ],
                 borderColor: '#ccc',
@@ -292,7 +301,7 @@
             ],
             bmap: {
                 center: [116.46, 39.92],
-                zoom: 11.8,
+                zoom: 14,
                 roam: true
             }
         };
