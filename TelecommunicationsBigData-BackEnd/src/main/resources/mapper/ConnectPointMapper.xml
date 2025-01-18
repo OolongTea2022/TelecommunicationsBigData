@@ -6,11 +6,11 @@
         SELECT COUNT(*) AS COUNT, PROVINCE
         FROM NWQUALITY
         <where>
-            <if test="nwOperator != null and nwOperator != ''">
-                AND NWOPERATOR = #{nwOperator}
+            <if test="dto.nwOperator != null and dto.nwOperator != ''">
+                AND NWOPERATOR = #{dto.nwOperator}
             </if>
-            <if test="startTime != null and endTime != null">
-                AND DAYTIME BETWEEN #{startTime} AND #{endTime}
+            <if test="dto.startTime != null and dto.endTime != null">
+                AND DAYTIME BETWEEN #{dto.startTime} AND #{dto.endTime}
             </if>
         </where>
         GROUP BY PROVINCE
