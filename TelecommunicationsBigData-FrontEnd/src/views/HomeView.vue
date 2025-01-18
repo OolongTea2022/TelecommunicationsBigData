@@ -28,7 +28,7 @@
 
         <el-menu-item index="/">
             <el-icon><HomeFilled  /></el-icon>
-            <span>仪表盘</span>
+            <span>所用技术</span>
         </el-menu-item>
 
         <el-sub-menu index="1">
